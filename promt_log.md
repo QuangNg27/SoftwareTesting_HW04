@@ -121,3 +121,13 @@ lấy đoạn promt tôi dùng để tạo script bên trên làm thành skill c
 ```text
 generate script cho 4 test case tiếp theo của FR05
 ```
+
+### [15-08-2026 11:52:44] | Gemini
+```text
+test script cho TC FR05 006 bị sai kết quả rồi để khoảng trắng là nó trong có kết quả đâu
+```
+
+### [15-08-2026 12:01:47] | Gemini
+```text
+sao ở webkit thì nó lại pass TC 006
+```

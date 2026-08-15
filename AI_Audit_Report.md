@@ -2,7 +2,7 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 15-08-2026 11:40:43  
+**Thời gian cập nhật:** 15-08-2026 12:01:47  
 
 ---
 
@@ -204,15 +204,37 @@ Khởi tạo thành công Agent Skill mới tên là `playwright-mcp-automation`
 
 ## Tác vụ 14: Sinh kịch bản kiểm thử cho 4 test cases tiếp theo (TC-FR05-005 đến TC-FR05-008) bằng Playwright MCP
 
-- **1. Prompt + tool (Câu lệnh + Công cụ):** `generate script cho 4 test case tiếp theo của FR05` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp` (`browser_navigate`, `browser_fill_form`, `browser_click`, `browser_snapshot`), `write_to_file` | **Timestamp:** `15-08-2026 11:40:43`
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `generate script cho 4 test case tiếp theo của FR05` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file` | **Timestamp:** `15-08-2026 11:40:43`
 - **2. AI output (Kết quả đầu ra của AI):**
 ```text
-Thực hiện khám phá tương tác thực tế qua Playwright MCP và cập nhật file test/fr_05.spec.js bổ sung 4 test cases tiếp theo của FR-05:
-- TC-FR05-005: Tìm kiếm sản phẩm không tồn tại ("Nokia 1280") -> Kiểm tra không hiển thị sản phẩm và hiển thị Empty State.
-- TC-FR05-006: Tự động cắt bỏ khoảng trắng thừa ("   iPhone 15 Pro Max   ") -> Kiểm tra tìm ra sản phẩm và ẩn các sản phẩm khác.
-- TC-FR05-007: Tìm kiếm từ khóa dài 254 ký tự (UB-1) -> Kiểm tra tiếp nhận query an toàn và trả về Empty State.
-- TC-FR05-008: Tìm kiếm từ khóa dài 255 ký tự (UB) -> Kiểm tra tiếp nhận query an toàn và trả về Empty State.
+Thực hiện khám phá tương tác thực tế qua Playwright MCP và cập nhật file test/fr_05.spec.js bổ sung 4 test cases tiếp theo của FR-05.
+```
+- **3. Verdict (Đánh giá):** **INVALID**
+- **4. Reasoning (Lý do đánh giá):** Trong `TC-FR05-006`, AI sử dụng selector lỏng lẻo `page.locator('text=iPhone 15 Pro Max').first()` vô tình bắt trúng dòng chữ tiêu đề `"Kết quả tìm kiếm cho:    iPhone 15 Pro Max   "` khiến kịch bản bị đánh giá Pass (False Positive) dù thực tế SUT không hiển thị sản phẩm nào do lỗi không trim khoảng trắng.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Sinh viên phát hiện và yêu cầu sửa selector sang dạng thẻ tiêu đề sản phẩm `page.getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 })` để phản ánh đúng lỗi Fail của SUT.
+
+---
+
+## Tác vụ 15: Sửa lỗi False Positive cho TC-FR05-006 bằng thẻ heading level 2
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `test script cho TC FR05 006 bị sai kết quả rồi để khoảng trắng là nó trong có kết quả đâu` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 11:52:44`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã sửa lỗi selector trong TC-FR05-006 từ `text=iPhone 15 Pro Max` sang `page.getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 })` (thẻ h2 tiêu đề sản phẩm) và bổ sung Mục 3.5 trong Report.md. Khi chạy trên SUT thực tế (bị lỗi không trim khoảng trắng), script sẽ báo Fail một cách chính xác do không tìm thấy thẻ h2 của sản phẩm.
 ```
 - **3. Verdict (Đánh giá):** **VALID**
-- **4. Reasoning (Lý do đánh giá):** AI đã vận dụng Kỹ năng `playwright-mcp-automation`, tương tác trực tiếp với SUT qua Playwright MCP để quan sát phản hồi thực tế và sinh ra 4 test cases bám sát 100% Kết quả mong đợi (ER) từ Báo cáo kiểm thử.
+- **4. Reasoning (Lý do đánh giá):** AI đã xác định đúng nguyên nhân bắt nhầm chuỗi con (Substring Matching) trong dòng kết quả tìm kiếm, chuyển đổi sang selector chuẩn semantic heading level 2 để test script bắt đúng lỗi thực tế của SUT.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 16: Phân tích và Xử lý Race Condition trên WebKit (Multi-browser Testing)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `sao ở webkit thì nó lại pass TC 006` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 12:01:47`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebKit: Khi bấm Tìm, WebKit đánh giá câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() ngay lập tức khi DOM của trang chủ cũ vẫn còn sản phẩm (chưa kịp nhận API response). Đến khi chuyển sang các lệnh not.toBeVisible() tiếp theo thì API đã trả về làm danh sách trống, dẫn đến toàn bộ assertion Pass sai lệch. Đã khắc phục bằng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` và bổ sung Mục 3.6 vào Report.md.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Stale State & Race Condition do chênh lệch lập lịch microtask/network giữa engine WebKit và Chromium trong kiểm thử đa trình duyệt (Multi-Browser Execution), đồng thời áp dụng giải pháp đồng bộ mạng `waitForResponse` chuẩn của Playwright.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
