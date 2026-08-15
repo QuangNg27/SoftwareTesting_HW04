@@ -33,6 +33,35 @@
       "categoryNameLength": 255,
       "categoryPrefix": "Category255Chars_",
       "expectedSuccess": true
+    },
+    "TC_FR14_005": {
+      "caseId": "TC-FR14-005",
+      "title": "Thêm danh mục với tên dài vượt biên trên (BVA)",
+      "categoryNameLength": 256,
+      "categoryPrefix": "Category256Chars_",
+      "maxAllowedLength": 255,
+      "expectedRestriction": true
+    },
+    "TC_FR14_006": {
+      "caseId": "TC-FR14-006",
+      "title": "Kiểm tra chống tấn công XSS qua tên danh mục (EC05)",
+      "xssPayload": "<img src=x onerror=alert('XSS')>",
+      "expectedText": "<img src=x onerror=alert('XSS')>",
+      "expectedAlert": false
+    },
+    "TC_FR14_007": {
+      "caseId": "TC-FR14-007",
+      "title": "Kiểm tra chống SQL Injection qua tên danh mục (EC06)",
+      "sqliPayload": "Category' OR '1'='1' --",
+      "expectedSavedText": "Category' OR '1'='1' --",
+      "expectedSuccess": true
+    },
+    "TC_FR14_008": {
+      "caseId": "TC-FR14-008",
+      "title": "Xem danh sách các danh mục hiện có (Thao tác Xem)",
+      "expectedHeaders": ["ID", "Tên Danh Mục", "Hành động"],
+      "defaultCategories": ["Điện thoại", "Laptop", "Phụ kiện"],
+      "minRowCount": 1
     }
   }
 }

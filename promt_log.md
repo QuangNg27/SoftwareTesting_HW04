@@ -276,3 +276,47 @@ mở lên không thấy title
 ```text
 generate test script cho 4 test case đầu của FR-14, truy cập bằng http://localhost:5174/, tài khoản admin: admin@eshop.com / Admin123!, vào tab Danh mục
 ```
+
+### [15-08-2026 21:40:27] | Gemini
+```text
+tiếp tục 4 test case tiếp theo
+```
+
+### [15-08-2026 21:46:44] | Gemini
+```text
+check lại script của TC_FR14_005
+```
+
+### [15-08-2026 21:51:18] | Gemini
+```text
+check lại TC 006 có lỗi khi chạy trên webkit
+Test timeout of 30000ms exceeded while running "beforeEach" hook.
+
+  12 |
+  13 |   // Pre-requisite chung cho các test cases: Đăng nhập quyền Admin và chuyển đến tab "Danh mục"
+> 14 |   test.beforeEach(async ({ page }) => {
+     |        ^
+  15 |     await page.goto(baseUrl);
+  16 |     
+  17 |     // Nếu chưa đăng nhập (xuất hiện ô Email), thực hiện đăng nhập Admin
+```
+
+### [15-08-2026 21:56:09] | Gemini
+```text
+check test case 007 cũng bị lỗi tương tự của webkit
+```
+
+### [15-08-2026 21:59:41] | Gemini
+```text
+test case 004 bị dính lỗi đó luôn
+```
+
+### [15-08-2026 22:00:33] | Gemini
+```text
+TC 008 nữa
+```
+
+### [15-08-2026 22:03:30] | Gemini
+```text
+check lại sao TC 005 lại pass trên chrome
+```

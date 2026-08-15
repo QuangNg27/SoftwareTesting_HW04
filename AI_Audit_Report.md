@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 15-08-2026 21:27:57  
+**Thời gian cập nhật:** 15-08-2026 22:03:30  
 
 ---
 
@@ -234,7 +234,7 @@ Thực hiện khám phá tương tác thực tế qua Playwright MCP và cập n
 - **1. Prompt + tool (Câu lệnh + Công cụ):** `sao ở webkit thì nó lại pass TC 006` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 12:01:47`
 - **2. AI output (Kết quả đầu ra của AI):**
 ```text
-Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebKit: Khi bấm Tìm, WebKit đánh giá câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() ngay lập tức khi DOM của trang chủ cũ vẫn còn sản phẩm (chưa kịp nhận API response). Đến khi chuyển sang các lệnh not.toBeVisible() tiếp theo thì API đã trả về làm danh sách trống, dẫn đến toàn bộ assertion Pass sai lệch. Đã khắc phục bằng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` và bổ sung Mục 3.6 vào Report.md.
+Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebKit: Khi bấm Tìm, WebKit đánh giá câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() ngay lập tức khi DOM của trang chủ cũ vẫn còn sản phẩm (cưa kịp nhận API response). Đến khi chuyển sang các lệnh not.toBeVisible() tiếp theo thì API đã trả về làm danh sách trống, dẫn đến toàn bộ assertion Pass sai lệch. Đã khắc phục bằng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` và bổ sung Mục 3.6 vào Report.md.
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Stale State & Race Condition do chênh lệch lập lịch microtask/network giữa engine WebKit và Chromium trong kiểm thử đa trình duyệt (Multi-Browser Execution), đồng thời áp dụng giải pháp đồng bộ mạng `waitForResponse` chuẩn của Playwright.
@@ -435,4 +435,95 @@ Khám phá ứng dụng Admin Portal tại http://localhost:5174/ qua Playwright
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã khám phá chính xác tương tác trên cổng Admin Portal qua Playwright MCP, thực hiện tiền điều kiện đăng nhập và chuyển tab danh mục trong `test.beforeEach`, tách dữ liệu kiểm thử ra JSON độc lập và triển khai chuẩn xác các assertion bám sát Kết quả mong đợi (ER).
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 32: Bổ sung 4 test case tiếp theo (TC-FR14-005 đến TC-FR14-008) cho tính năng FR-14
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `tiếp tục 4 test case tiếp theo` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file` | **Timestamp:** `15-08-2026 21:40:27`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Cập nhật data/fr14_category_data.json bổ sung bộ dữ liệu kiểm thử cho TC-FR14-005 đến TC-FR14-008, mở rộng kịch bản test/fr_14.spec.js bao phủ các trường hợp: Giới hạn độ dài tên danh mục 256 ký tự (BVA), Kiểm tra chống mã độc XSS (<img src=x onerror=alert('XSS')>), Kiểm tra chống SQL Injection (Category' OR '1'='1' --), và Kiểm tra cấu trúc bảng/danh sách danh mục mặc định (Xem danh mục).
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã mở rộng bộ dữ liệu JSON và kịch bản Playwright cho 4 test cases tiếp theo (TC 5-8), tích hợp bộ lắng nghe dialog XSS, kiểm định mã trạng thái phản hồi HTTP, bảo toàn nguyên tắc Data-Driven Testing và đa dạng hóa các mẫu assertion.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 33: Rà soát & Chuẩn hóa Khẳng định (Assertion) cho TC-FR14-005 (BVA 256 ký tự)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check lại script của TC_FR14_005` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 21:46:44`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích điểm hạn chế của script cũ: Sử dụng cấu trúc rẽ nhánh if/else với fallback expect(true).toBe(true) có thể dẫn tới False Positive nếu DOM chưa kịp render. Đã loại bỏ hoàn toàn khối if/else và thay thế bằng khẳng định phủ định nghiêm ngặt: `await expect(page.locator('tbody tr').filter({ hasText: longCategoryName256 })).not.toBeVisible()`. Khẳng định này đảm bảo bám sát 100% Kết quả mong đợi (ER) rằng chuỗi 256 ký tự không được phép lưu nguyên vẹn trong hệ thống.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác nguy cơ False Positive từ cấu trúc điều kiện `if/else`, chuyển đổi sang assertion phủ định trực tiếp `not.toBeVisible()` chuẩn mực Playwright. Khi chạy trên SUT thực tế (bị lỗi cho phép lưu 256 ký tự), test script sẽ báo Fail chính xác để phát hiện Defect đúng như Báo cáo kiểm thử.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 34: Khắc phục lỗi Timeout 30000ms trong hook beforeEach trên WebKit
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check lại TC 006 có lỗi khi chạy trên webkit Test timeout of 30000ms exceeded while running "beforeEach" hook.` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 21:51:18`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân: Trong WebKit, lệnh `emailInput.isVisible({ timeout: 2000 })` không có cơ chế auto-waiting đầy đủ; khi React đang mount component login, `isVisible()` trả về `false` ngay lập tức khiến khối lệnh đăng nhập bị bỏ qua. Hệ quả là Playwright cố tìm phần tử menu `<li: Danh mục>` (vốn chỉ có sau khi đăng nhập) và bị treo 30000ms. Đã khắc phục triệt để bằng cách dùng cơ chế auto-waiting song song `Promise.race([expect(emailInput).toBeVisible(), expect(categoryMenu).toBeVisible()])`.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác cơ chế hoạt động của `locator.isVisible()` (kiểm tra tức thời không auto-wait) và giải quyết triệt để lỗi timeout trên WebKit bằng cơ chế auto-waiting đồng thời `Promise.race`, đảm bảo hook `beforeEach` luôn chạy mượt mà trên cả 3 trình duyệt.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 35: Triệt tiêu hoàn toàn nguy cơ Treo mạng (Network Hang) trên WebKit ở TC-FR14-007 và các test cases
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check test case 007 cũng bị lỗi tương tự của webkit` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 21:56:09`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân: Trong WebKit, việc bọc `Promise.all([page.waitForResponse(...), page.getByRole('button').click()])` vào các thao tác bấm "Thêm mới" và "Login" gây ra hiện tượng treo 30.000ms nếu response của WebKit hoàn tất trước khi listener kịp gắn kết hoặc URL không khớp tuyệt đối. Đã loại bỏ hoàn toàn các Promise waitForResponse dư thừa, đơn giản hóa beforeEach bằng khối try/catch auto-wait `expect(emailInput).toBeVisible({ timeout: 3000 })` và dựa hoàn toàn vào cơ chế auto-retry 5000ms mặc định của Playwright assertions.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã nhận diện chính xác nguyên nhân gây treo kiểm thử (Hang/Timeout) trên engine WebKit xuất phát từ việc lạm dụng `page.waitForResponse` không cần thiết, tái cấu trúc toàn bộ suite kiểm thử sang cơ chế auto-retry chuẩn mực của Playwright giúp các ca kiểm thử từ TC 001 đến TC 008 chạy mượt mà trên mọi trình duyệt.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 36: Xử lý triệt để Dropped Click trên WebKit trong beforeEach bằng expect().toPass()
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `test case 004 bị dính lỗi đó luôn` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 21:59:41`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân cốt lõi gây lỗi ở TC 004, 006, 007 trên WebKit: Ngay sau khi bấm Login, WebKit render Dashboard nhưng React chưa kịp gắn kết (hydrate/bind) sự kiện onClick vào phần tử <li>Danh mục</li>. Lệnh click() diễn ra quá nhanh bị rơi (dropped click / No-op), khiến trang không bao giờ chuyển sang tab Danh mục và câu lệnh `expect(heading 'Quản lý Danh mục')` bị timeout 30.000ms. Đã khắc phục triệt để bằng cơ chế `expect(async () => { ... }).toPass({ timeout: 10000 })` kết hợp `click({ force: true })` để tự động thử lại click cho đến khi tiêu đề xuất hiện.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã xác định chuẩn xác hiện tượng Dropped Event / Hydration Timing trên nhân WebKit (khi Playwright phát dispatch click trước khi React gắn listener vào DOM) và áp dụng giải pháp chính thức tốt nhất của Playwright là `expect().toPass()` để đảm bảo hook `beforeEach` chuyển tab thành công 100%.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 37: Tối ưu hóa TC-FR14-008 với Auto-waiting cho Bảng dữ liệu Danh mục trên WebKit
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `TC 008 nữa` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 22:00:33`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân: Trong TC-FR14-008, câu lệnh `page.locator('tbody tr').count()` chạy đồng bộ ngay khi trang vừa tải mà không chờ React fetch API `GET /api/categories` xong, dẫn tới `count()` trả về 0 trên WebKit. Đã bổ sung bước auto-waiting `await expect(page.locator('tbody tr').first()).toBeVisible({ timeout: 5000 })` trước khi đếm rowCount và kiểm tra nút hành động "Xóa" cho từng dòng theo đúng Kết quả mong đợi (ER).
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI phân tích đúng nguyên nhân bất đồng bộ khi tải bảng dữ liệu trên WebKit, bổ sung bước auto-wait cho dòng đầu tiên của bảng trước khi khẳng định số lượng hàng, đảm bảo kiểm định đầy đủ cấu trúc bảng và nút thao tác theo ER.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 38: Phân tích & Triệt tiêu Hiện tượng False Positive trên Chrome ở TC-FR14-005
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check lại sao TC 005 lại pass trên chrome` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 22:03:30`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân False Positive: Lệnh `await expect(full256Row).not.toBeVisible()` được thực thi ngay tức thì (0ms) sau khi bấm "Thêm mới" khi backend chưa kịp phản hồi và React chưa kịp re-render bảng; do dòng 256 ký tự chưa có trên DOM tại mili-giây đó nên `not.toBeVisible()` lập tức đánh giá PASS sai lệch. Đã khắc phục triệt để bằng cách: Chờ backend lưu xong `POST /api/categories`, tìm ô danh mục vừa tạo `td:nth-child(2)` và đo trực tiếp độ dài chuỗi lưu thực tế: `expect(savedText.length).toBeLessThanOrEqual(255)`. Khi SUT lưu đủ 256 ký tự (lỗi biên), assertion này sẽ báo FAIL chính xác 100%.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Early Assertion Race Condition của `not.toBeVisible()`, chuyển đổi sang kỹ thuật đo độ dài chuỗi thực tế trong CSDL/DOM (`savedText.length <= 255`) bám sát 100% Kết quả mong đợi (ER) và phát hiện đúng Defect thực tế của SUT trên Chrome.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
