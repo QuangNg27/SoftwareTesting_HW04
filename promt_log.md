@@ -136,3 +136,59 @@ sao ở webkit thì nó lại pass TC 006
 ```text
 generate tiếp cho các test case còn lại của FR05, test case nào không tạo script được thì note lại vào @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md]
 ```
+
+### [15-08-2026 15:12:23] | Gemini
+```text
+test case 13 trên webkit bị lỗi:
+Error: expect(locator).toBeFocused() failed
+
+Locator:  getByRole('link', { name: 'EShop' })
+Expected: focused
+Received: inactive
+Timeout:  5000ms
+
+Call log:
+  - Expect "toBeFocused" with timeout 5000ms
+  - waiting for getByRole('link', { name: 'EShop' })
+    14 × locator resolved to <a href="/" data-discover="true" class="text-2xl font-bold">EShop</a>
+       - unexpected value "inactive"
+
+
+  247 |     // Tab 1: Logo / Home link "EShop"
+  248 |     await page.keyboard.press('Tab');
+> 249 |     await expect(page.getByRole('link', { name: 'EShop' })).toBeFocused();
+      |                                                             ^
+  250 |
+  251 |     // Tab 2: Link "Giỏ hàng"
+  252 |     await page.keyboard.press('Tab');
+```
+
+### [15-08-2026 15:16:47] | Gemini
+```text
+ở script dành cho TC 010 thì expect(dialogTriggered).toBe(false); là nó bị timeout nhưng nó vẫn để received là true thì có đúng không
+```
+
+### [15-08-2026 15:22:56] | Gemini
+```text
+giờ test case 13 trên webkit bị này Error: expect(locator).toBeFocused() failed
+
+Locator:  locator('input[placeholder="Tìm kiếm..."]')
+Expected: focused
+Received: inactive
+Timeout:  5000ms
+
+Call log:
+  - Expect "toBeFocused" with timeout 5000ms
+  - waiting for locator('input[placeholder="Tìm kiếm..."]')
+    14 × locator resolved to <input value="" type="text" placeholder="Tìm kiếm..." class="border p-2 rounded"/>
+       - unexpected value "inactive"
+
+
+  248 |       // Tab 1: Ô tìm kiếm
+  249 |       await page.keyboard.press('Tab');
+> 250 |       await expect(page.locator('input[placeholder="Tìm kiếm..."]')).toBeFocused();
+      |                                                                      ^
+  251 |
+  252 |       // Tab 2: Nút "Tìm"
+  253 |       await page.keyboard.press('Tab');
+```
