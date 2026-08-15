@@ -2,7 +2,7 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 12-08-2026 21:17:54  
+**Thời gian cập nhật:** 15-08-2026 11:38:14  
 
 ---
 
@@ -185,4 +185,17 @@ Việc assertion này bị thối (Fail) trên ứng dụng thực tế chứng 
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã cập nhật đầy đủ, chi tiết và chính xác phần phân tích khoảng trống (AI Gap Analysis) theo đúng tiêu chí yêu cầu trong Mục 6 (Task 1) của đề bài HW04.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 13: Tạo Agent Skill cho luồng Tự động hóa Kiểm thử Playwright MCP (Mục 7 Đề bài HW04)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `lấy đoạn promt tôi dùng để tạo script bên trên làm thành skill cho tôi` | **Công cụ:** Gemini 3.6 Flash / `write_to_file` | **Timestamp:** `15-08-2026 11:38:14`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Khởi tạo thành công Agent Skill mới tên là `playwright-mcp-automation` tại thư mục `.agents/skills/playwright-mcp-automation/SKILL.md` đóng gói toàn bộ quy trình prompt khám phá SUT bằng Playwright MCP, kiểm tra trạng thái DOM/Snapshot từng bước và tự động sinh mã test spec nháp (.spec.js) đạt tiêu chuẩn Mục 7 của đề bài HW04.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã đóng gói chính xác đoạn prompt mẫu thành một Agent Skill chuẩn có định dạng YAML frontmatter đầy đủ tên, mô tả và quy trình 4 bước hướng dẫn thực hiện, đáp ứng điểm thưởng Mục 7 (Agent Skill) của đề bài HW04.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

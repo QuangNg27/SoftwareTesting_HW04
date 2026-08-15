@@ -111,3 +111,8 @@ cái này là đúng mà đúng không
 ```text
 ghi lại nhưng gì tôi đã chỉnh sửa script vào một phần AI Gap Analysis vô @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md]
 ```
+
+### [15-08-2026 11:38:14] | Gemini
+```text
+lấy đoạn promt tôi dùng để tạo script bên trên làm thành skill cho tôi
+```
