@@ -131,3 +131,8 @@ test script cho TC FR05 006 bị sai kết quả rồi để khoảng trắng l�
 ```text
 sao ở webkit thì nó lại pass TC 006
 ```
+
+### [15-08-2026 12:14:18] | Gemini
+```text
+generate tiếp cho các test case còn lại của FR05, test case nào không tạo script được thì note lại vào @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md]
+```

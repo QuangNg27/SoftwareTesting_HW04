@@ -160,4 +160,113 @@ test.describe('FR-05: Xem danh sách & Tìm kiếm sản phẩm', () => {
     await expect(page.getByText(/không tìm thấy|không có sản phẩm/i)).toBeVisible();
   });
 
+  test('TC-FR05-009: Tìm kiếm với độ dài từ khóa vượt biên trên (UB+1)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    const query256 = 'a'.repeat(256);
+    const searchInput = page.locator('input[placeholder="Tìm kiếm..."]');
+    await searchInput.fill(query256);
+
+    // ER: Ô nhập liệu giới hạn không cho phép nhập ký tự thứ 256 (maxlength=255) HOẶC tự động cắt ngắn chuỗi còn 255 ký tự
+    const actualLength = (await searchInput.inputValue()).length;
+    expect(actualLength).toBeLessThanOrEqual(255);
+
+    await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('products') && resp.status() === 200).catch(() => {}),
+      page.locator('button:has-text("Tìm")').click(),
+    ]);
+
+    // Kiểm tra không làm crash giao diện hoặc tràn layout
+    await expect(page.locator('h1').first()).toBeVisible();
+  });
+
+  test('TC-FR05-010: Kiểm tra bảo mật chống tấn công XSS (HTML/Script/Event Injection) (EC05)', async ({ page }) => {
+    let dialogTriggered = false;
+    page.on('dialog', async dialog => {
+      dialogTriggered = true;
+      await dialog.dismiss().catch(() => {});
+    });
+
+    await page.goto('http://localhost:5173/');
+
+    const xssPayload = "<img src=x onerror=alert('XSS')>";
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill(xssPayload);
+    
+    await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('products') && resp.status() === 200).catch(() => {}),
+      page.locator('button:has-text("Tìm")').click(),
+    ]);
+
+    // ER 1: Tuyệt đối không có hộp thoại alert nào xuất hiện trên màn hình.
+    expect(dialogTriggered).toBe(false);
+
+    // ER 2: Từ khóa tìm kiếm hiển thị an toàn trên giao diện dưới dạng chuỗi thuần túy (không render HTML).
+    await expect(page.getByText(`Kết quả tìm kiếm cho: ${xssPayload}`)).toBeVisible();
+  });
+
+  test('TC-FR05-011: Kiểm tra bảo mật chống tấn công SQL Injection (EC06)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    // Nhập chuỗi mã độc SQL Injection
+    const sqliPayload = "iPhone' OR '1'='1' --";
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill(sqliPayload);
+
+    await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('products') && resp.status() === 200).catch(() => {}),
+      page.locator('button:has-text("Tìm")').click(),
+    ]);
+
+    // ER 1: Database không crash, API trả về an toàn.
+    await expect(page.locator('h1').first()).toBeVisible();
+
+    // ER 2: API không được trả về toàn bộ sản phẩm do logic OR '1'='1' bypass
+    // Nếu không có sản phẩm nào tên đúng nghĩa đen chuỗi sqliPayload thì phải là Empty State
+    await expect(page.getByRole('heading', { name: 'Samsung Galaxy S24 Ultra', level: 2 })).not.toBeVisible();
+    await expect(page.getByRole('heading', { name: 'MacBook Pro M3', level: 2 })).not.toBeVisible();
+  });
+
+  test('TC-FR05-012: Kiểm tra trạng thái đang tải dữ liệu (Loading State)', async ({ page }) => {
+    // Giả lập network delay để kiểm tra loading indicator
+    await page.route('**/api/products*', async route => {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      await route.continue();
+    });
+
+    const navigationPromise = page.goto('http://localhost:5173/');
+
+    // ER: Trong thời gian chờ phản hồi từ API, màn hình phải hiển thị trạng thái đang tải dữ liệu rõ ràng (Loading spinner/indicator).
+    await expect(page.getByText(/loading|đang tải/i).or(page.locator('.spinner, .loading'))).toBeVisible({ timeout: 500 });
+
+    await navigationPromise;
+  });
+
+  test('TC-FR05-013: Kiểm tra thứ tự tập trung tiêu điểm bằng phím Tab (Tab Order)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    // ER: Thứ tự tiêu điểm di chuyển một cách tuần tự từ trên xuống dưới, từ trái sang phải trên các phần tử tương tác
+    // Tab 1: Logo / Home link "EShop"
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: 'EShop' })).toBeFocused();
+
+    // Tab 2: Link "Giỏ hàng"
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: 'Giỏ hàng' })).toBeFocused();
+
+    // Tab 3: Link "Đăng nhập"
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: 'Đăng nhập' })).toBeFocused();
+
+    // Tab 4: Link "Đăng ký"
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('link', { name: 'Đăng ký' })).toBeFocused();
+
+    // Tab 5: Ô tìm kiếm
+    await page.keyboard.press('Tab');
+    await expect(page.locator('input[placeholder="Tìm kiếm..."]')).toBeFocused();
+
+    // Tab 6: Nút "Tìm"
+    await page.keyboard.press('Tab');
+    await expect(page.locator('button:has-text("Tìm")')).toBeFocused();
+  });
+
 });

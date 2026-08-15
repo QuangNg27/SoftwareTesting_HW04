@@ -2,7 +2,7 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 15-08-2026 12:01:47  
+**Thời gian cập nhật:** 15-08-2026 12:14:18  
 
 ---
 
@@ -237,4 +237,17 @@ Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebK
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Stale State & Race Condition do chênh lệch lập lịch microtask/network giữa engine WebKit và Chromium trong kiểm thử đa trình duyệt (Multi-Browser Execution), đồng thời áp dụng giải pháp đồng bộ mạng `waitForResponse` chuẩn của Playwright.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 17: Sinh kịch bản kiểm thử cho toàn bộ các test case còn lại của FR-05 và cập nhật Báo cáo Khả năng Tự động hóa
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `generate tiếp cho các test case còn lại của FR05, test case nào không tạo script được thì note lại vào @[Report.md]` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file` | **Timestamp:** `15-08-2026 12:14:18`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã hoàn thành sinh mã kiểm thử tự động cho toàn bộ 13/13 test cases của tính năng FR-05 trong tệp test/fr_05.spec.js (bao gồm TC-FR05-009 đến TC-FR05-013 về biên 256 ký tự, bảo mật XSS, bảo mật SQLi, Loading state với network throttling và Tab Order accessibility). Đồng thời cập nhật Mục 4: Báo cáo Khả năng Tự động hóa Test Case vào Report.md xác nhận 100% test cases của FR-05 đều tự động hóa được.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã khám phá các tương tác bảo mật (XSS dialog listener, SQLi response) và trợ năng (Tab keyboard events, Loading route intercept) để tự động hóa toàn bộ 13 test cases một cách chính xác, bám sát các kỹ thuật nâng cao của Playwright Test.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
