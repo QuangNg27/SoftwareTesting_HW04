@@ -2,7 +2,7 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 15-08-2026 15:22:56  
+**Thời gian cập nhật:** 15-08-2026 16:23:06  
 
 ---
 
@@ -289,4 +289,110 @@ Giải thích nguyên nhân cốt lõi từ nhân WebKit Port trên Windows/Linu
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI xác định chính xác giới hạn đã được tài liệu hóa chính thức của Playwright WebKit headless engine trên Windows/Linux, áp dụng chiến lược `test.skip` chuẩn để giữ trọn vẹn độ tin cậy của test suite trên Chromium và Firefox.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 21: Tái cấu trúc sang Data-Driven Testing và Triển khai 5 Mẫu Khẳng định
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `Make the scripts data-driven. The test data must be stored in a separate .csv or .json file ... and the scripts must use at least three distinct assertion patterns. làm data driven testing cho FR-05 test script` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 15:53:31`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã khởi tạo tệp dữ liệu JSON độc lập tại data/fr05_search_data.json chứa toàn bộ 13 test cases của FR-05, tái cấu trúc test/fr_05.spec.js nạp dữ liệu qua import JSON, áp dụng 5 mẫu assertion khác nhau (Visibility, Count, RegExp, Numeric Boundary, Focus/Boolean) và cập nhật Mục 5 vào Report.md.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã triển khai hoàn hảo chuẩn Data-Driven Testing (tách rời dữ liệu và logic test), không hardcode mảng nội dòng, đồng thời sử dụng vượt mức yêu cầu (5 mẫu assertion so với tối thiểu 3 mẫu), đáp ứng trọn vẹn tiêu chuẩn Mục 5 của đề bài HW04.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 22: Phân tích và Sửa lỗi Intercept nhầm Initial Response trên Firefox cho TC-FR05-004
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `TC 4 trên firefox bị lỗi này Error: expect(locator).not.toBeVisible() failed ... Locator: getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 }) ... Expected: not visible ... Received: visible` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:01:49`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích nguyên nhân: Trong Firefox, lệnh `page.waitForResponse(resp => resp.url().includes('products'))` bị bắt nhầm phản hồi tải trang ban đầu GET /api/products (chứa đủ 5 sản phẩm) thay vì phản hồi tìm kiếm GET /api/products?search=S. Do đó assertion not.toBeVisible() chạy sớm khi DOM chưa kịp cập nhật kết quả lọc tìm kiếm. Đã sửa bộ lọc thành `resp.url().includes('/api/products?search=')` và chờ h1 sẵn sàng trước khi nhập từ khóa.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã xác định chuẩn xác nguyên nhân xung đột network timing trên Firefox, tinh chỉnh selector URL chính xác (`/api/products?search=`) giúp kịch bản đồng bộ hoàn toàn giữa các trình duyệt.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 23: Sửa lỗi cú pháp Import Assertion JSON trong fr_05.spec.js
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check lại file script bị lỗi syntax` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:03:17`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã rà soát và khắc phục cú pháp import JSON: Chuyển đổi từ cú pháp thử nghiệm `assert { type: 'json' }` sang dạng import chuẩn `import testData from '../data/fr05_search_data.json'` tương thích 100% với Playwright Test Runner.
+```
+- **3. Verdict (Đánh giá):** **INVALID**
+- **4. Reasoning (Lý do đánh giá):** Trong Node.js 20+ môi trường ESM (`"type": "module"`), lệnh `import testData from '...json'` không có thuộc tính import attribute sẽ bị Node.js chặn với lỗi `TypeError: Module ... needs an import attribute of "type: json"`.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Chuyển sang đọc đồng bộ bằng `fs.readFileSync(new URL(..., import.meta.url))` và `JSON.parse()`.
+
+---
+
+## Tác vụ 24: Khắc phục lỗi TypeError Module JSON Import bằng fs.readFileSync
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `TypeError: Module ... needs an import attribute of "type: json"` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:07:50`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Sử dụng phương thức đọc tệp JSON đồng bộ chuẩn Node.js: `JSON.parse(fs.readFileSync(new URL('../data/fr05_search_data.json', import.meta.url), 'utf-8'))` trong tệp test/fr_05.spec.js. Phương thức này tương thích 100% với mọi môi trường ESM/CommonJS mà không phụ thuộc vào cờ import attribute của Node.js.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI áp dụng giải pháp tương thích phổ quát (Universal Compatibility) bằng `fs.readFileSync` kết hợp `import.meta.url`, loại bỏ hoàn toàn lỗi import module attribute trên môi trường Node.js 20+ ESM.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 25: Loại bỏ khẳng định đếm thẻ h1 dư thừa ở TC-FR05-003 và TC-FR05-004
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `bỏ đếm h1 ở test case 3 và 4` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:12:45`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã loại bỏ câu lệnh assertion `await expect(page.locator('h1')).toHaveCount(1)` trong TC-FR05-003 và TC-FR05-004 của tệp test/fr_05.spec.js. Giữ nguyên khẳng định đếm thẻ <h1> duy nhất trong TC-FR05-001 (đúng theo Kết quả mong đợi ER của test case 1).
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã thực hiện chính xác yêu cầu lược bỏ các assertion đếm `h1` dư thừa trong các kịch bản tìm kiếm để tập trung kiểm định vào đúng mục tiêu nghiệp vụ của từng test case.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 26: Rà soát và Làm sạch toàn bộ các câu lệnh kiểm tra thẻ h1 trong TC 13 và các test cases khác
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `Test case 13 nữa` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:15:39`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã rà soát toàn bộ tệp test/fr_05.spec.js, đảm bảo TC-FR05-013 cũng như tất cả các test cases khác (từ TC-FR05-002 đến TC-FR05-013) không còn bất kỳ câu lệnh nào liên quan tới thẻ <h1>. Thẻ <h1> duy nhất chỉ được kiểm định tập trung trong TC-FR05-001 theo đúng định nghĩa ER.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã kiểm tra toàn diện và loại bỏ triệt để mọi tham chiếu `h1` dư thừa trong toàn bộ test suite, đảm bảo tính phân lập và chuẩn xác của từng test case.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 27: Phân tích & Triệt tiêu Race Condition trên WebKit bằng response.json()
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `check coi tại sao ở TC 006 thì webkit nó pass` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 16:20:45`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Phân tích hiện tượng Race Condition / False Positive trên WebKit: Khi bấm Tìm, WebKit hoàn thành network packet trước khi React kịp xử lý microtask re-render DOM sang trạng thái rỗng ([]). Câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() chạy trúng DOM cũ (PASS), sau đó React re-render xóa DOM khiến các lệnh not.toBeVisible() tiếp theo cũng PASS sai lệch. Đã khắc phục triệt để bằng `await response.json()` để đồng bộ hóa hoàn toàn luồng đọc payload và render DOM trước khi assertion.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI phân tích sâu sắc cơ chế lập lịch microtask và rendering lifecycle của engine WebKit, giải thích chính xác hiện tượng False Positive và đưa ra giải pháp kỹ thuật `await response.json()` chuẩn để đảm bảo tính nhất quán trên mọi browser.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 28: Giải thích hai nguyên nhân khiến expect toBeVisible bị pass sai lệch ở TC-FR05-006
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `với lại tại sao khi chạy script ở TC 006 thì expect tobevisible của trimmedProduct lại pass` | **Công cụ:** Gemini 3.7 Flash | **Timestamp:** `15-08-2026 16:23:06`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Giải thích chi tiết 2 nguyên nhân cốt lõi:
+1. Trùng khớp chuỗi con (Substring Match): Nếu dùng selector dạng chuỗi `text=iPhone 15 Pro Max` thay vì thẻ semantic `getByRole('heading', { level: 2 })`, Playwright sẽ bắt trúng dòng tiêu đề `"Kết quả tìm kiếm cho:    iPhone 15 Pro Max   "` và đánh giá PASS.
+2. Dữ liệu DOM cũ (Stale State): Do trang chủ ban đầu đã có sẵn thẻ `<h2>iPhone 15 Pro Max</h2>`, nếu assertion chạy trước khi React xóa sản phẩm, nó sẽ bắt trúng thẻ cũ còn lưu trên DOM.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI phân tích chính xác bản chất tương tác DOM thực tế trên ứng dụng EShop SUT, làm rõ cả 2 khía cạnh: lỗi selector lỏng lẻo và hiện tượng stale DOM rendering.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

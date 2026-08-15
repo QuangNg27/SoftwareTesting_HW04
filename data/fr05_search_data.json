@@ -1,0 +1,130 @@
+{
+  "feature": "FR-05: Xem danh sách & Tìm kiếm sản phẩm",
+  "baseUrl": "http://localhost:5173/",
+  "testCases": {
+    "TC_FR05_001": {
+      "caseId": "TC-FR05-001",
+      "title": "Hiển thị mặc định danh sách sản phẩm khi vào trang chủ",
+      "expectedH1Count": 1,
+      "expectedProducts": [
+        "iPhone 15 Pro Max",
+        "Samsung Galaxy S24 Ultra",
+        "MacBook Pro M3",
+        "Tai nghe AirPods Pro 2",
+        "Bàn phím cơ Keychron Q1"
+      ],
+      "expectedPricePattern": "30,000,000 ₫"
+    },
+    "TC_FR05_002": {
+      "caseId": "TC-FR05-002",
+      "title": "Kiểm tra thuộc tính Alt của hình ảnh sản phẩm",
+      "minImageCount": 1
+    },
+    "TC_FR05_003": {
+      "caseId": "TC-FR05-003",
+      "title": "Tìm kiếm khớp hoàn toàn tên sản phẩm",
+      "keyword": "iPhone 15 Pro Max",
+      "expectedSearchLabel": "Kết quả tìm kiếm cho: iPhone 15 Pro Max",
+      "expectedVisible": ["iPhone 15 Pro Max"],
+      "expectedHidden": [
+        "Samsung Galaxy S24 Ultra",
+        "MacBook Pro M3",
+        "Tai nghe AirPods Pro 2",
+        "Bàn phím cơ Keychron Q1"
+      ]
+    },
+    "TC_FR05_004": {
+      "caseId": "TC-FR05-004",
+      "title": "Tìm kiếm khớp một phần tên sản phẩm",
+      "keyword": "S",
+      "expectedVisible": [
+        "Samsung Galaxy S24 Ultra",
+        "Tai nghe AirPods Pro 2"
+      ],
+      "expectedHidden": [
+        "iPhone 15 Pro Max",
+        "MacBook Pro M3",
+        "Bàn phím cơ Keychron Q1"
+      ]
+    },
+    "TC_FR05_005": {
+      "caseId": "TC-FR05-005",
+      "title": "Tìm kiếm sản phẩm không tồn tại (EC03)",
+      "keyword": "Nokia 1280",
+      "expectedHidden": [
+        "iPhone 15 Pro Max",
+        "Samsung Galaxy S24 Ultra",
+        "MacBook Pro M3",
+        "Tai nghe AirPods Pro 2",
+        "Bàn phím cơ Keychron Q1"
+      ],
+      "emptyStatePattern": "không tìm thấy|không có sản phẩm"
+    },
+    "TC_FR05_006": {
+      "caseId": "TC-FR05-006",
+      "title": "Tự động cắt bỏ khoảng trắng thừa ở hai đầu từ khóa (EC04)",
+      "rawKeyword": "   iPhone 15 Pro Max   ",
+      "trimmedProduct": "iPhone 15 Pro Max",
+      "expectedHidden": [
+        "Samsung Galaxy S24 Ultra",
+        "MacBook Pro M3",
+        "Tai nghe AirPods Pro 2",
+        "Bàn phím cơ Keychron Q1"
+      ]
+    },
+    "TC_FR05_007": {
+      "caseId": "TC-FR05-007",
+      "title": "Tìm kiếm với độ dài từ khóa cận biên trên hợp lệ (UB-1)",
+      "length": 254,
+      "char": "a",
+      "emptyStatePattern": "không tìm thấy|không có sản phẩm"
+    },
+    "TC_FR05_008": {
+      "caseId": "TC-FR05-008",
+      "title": "Tìm kiếm với độ dài từ khóa chạm biên trên hợp lệ (UB)",
+      "length": 255,
+      "char": "a",
+      "emptyStatePattern": "không tìm thấy|không có sản phẩm"
+    },
+    "TC_FR05_009": {
+      "caseId": "TC-FR05-009",
+      "title": "Tìm kiếm với độ dài từ khóa vượt biên trên (UB+1)",
+      "length": 256,
+      "char": "a",
+      "maxLengthLimit": 255
+    },
+    "TC_FR05_010": {
+      "caseId": "TC-FR05-010",
+      "title": "Kiểm tra bảo mật chống tấn công XSS (HTML/Script/Event Injection) (EC05)",
+      "xssPayload": "<img src=x onerror=alert('XSS')>",
+      "expectDialogTriggered": false
+    },
+    "TC_FR05_011": {
+      "caseId": "TC-FR05-011",
+      "title": "Kiểm tra bảo mật chống tấn công SQL Injection (EC06)",
+      "sqliPayload": "iPhone' OR '1'='1' --",
+      "expectedHidden": [
+        "Samsung Galaxy S24 Ultra",
+        "MacBook Pro M3"
+      ]
+    },
+    "TC_FR05_012": {
+      "caseId": "TC-FR05-012",
+      "title": "Kiểm tra trạng thái đang tải dữ liệu (Loading State)",
+      "delayMs": 800,
+      "loadingPattern": "loading|đang tải"
+    },
+    "TC_FR05_013": {
+      "caseId": "TC-FR05-013",
+      "title": "Kiểm tra thứ tự tập trung tiêu điểm bằng phím Tab (Tab Order)",
+      "expectedLinks": [
+        "EShop",
+        "Giỏ hàng",
+        "Đăng nhập",
+        "Đăng ký"
+      ],
+      "searchPlaceholder": "Tìm kiếm...",
+      "searchButtonText": "Tìm"
+    }
+  }
+}

@@ -192,3 +192,72 @@ Call log:
   252 |       // Tab 2: Nút "Tìm"
   253 |       await page.keyboard.press('Tab');
 ```
+
+### [15-08-2026 15:53:31] | Gemini
+```text
+Make the scripts data-driven. The test data must be stored in a separate
+.csv or .json file (hardcoded inline arrays or objects in the script are not
+accepted), and the scripts must use at least three distinct assertion
+patterns.
+
+làm data driven testing cho FR-05 test script
+```
+
+### [15-08-2026 16:01:49] | Gemini
+```text
+TC 4 trên firefox bị lỗi này Error: expect(locator).not.toBeVisible() failed
+
+Locator:  getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 })
+Expected: not visible
+Received: visible
+Timeout:  5000ms
+
+Call log:
+  - Expect "not toBeVisible" with timeout 5000ms
+  - waiting for getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 })
+    14 × locator resolved to <h2 class="text-xl font-semibold mb-2 truncate">iPhone 15 Pro Max</h2>
+       - unexpected value "visible"
+
+
+  84 |
+  85 |     for (const name of data.expectedHidden) {
+> 86 |       await expect(page.getByRole('heading', { name, level: 2 })).not.toBeVisible();
+     |                                                                       ^
+  87 |     }
+  88 |   });
+```
+
+### [15-08-2026 16:03:17] | Gemini
+```text
+check lại file script bị lỗi syntax
+```
+
+### [15-08-2026 16:07:50] | Gemini
+```text
+D:\NAM_3\HK3\KTPM\eshop-sut\frontend-web>npx playwright test tests/fr_05.spec.js
+TypeError: Module "file:///D:/NAM_3/HK3/KTPM/eshop-sut/frontend-web/data/fr05_search_data.json" needs an import attribute of "type: json"
+
+Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+```
+
+### [15-08-2026 16:12:45] | Gemini
+```text
+bỏ đếm h1 ở test case 3 và 4
+```
+
+### [15-08-2026 16:15:39] | Gemini
+```text
+Test case 13 nữa
+```
+
+### [15-08-2026 16:20:45] | Gemini
+```text
+check coi tại sao ở TC 006 thì webkit nó pass
+```
+
+### [15-08-2026 16:23:06] | Gemini
+```text
+với lại tại sao khi chạy script ở TC 006 thì expect tobevisible của trimmedProduct lại pass
+```
