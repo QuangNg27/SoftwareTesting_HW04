@@ -261,3 +261,13 @@ check coi tại sao ở TC 006 thì webkit nó pass
 ```text
 với lại tại sao khi chạy script ở TC 006 thì expect tobevisible của trimmedProduct lại pass
 ```
+
+### [15-08-2026 16:40:13] | Gemini
+```text
+thêm vào title của html report của FR05 @[html_report/FR05/index.html] Run by: 23127462
+```
+
+### [15-08-2026 16:41:08] | Gemini
+```text
+mở lên không thấy title
+```

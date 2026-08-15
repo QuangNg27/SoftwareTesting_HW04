@@ -2,7 +2,8 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 15-08-2026 16:23:06  
+**MSSV:** 23127462  
+**Thời gian cập nhật:** 15-08-2026 16:41:08  
 
 ---
 
@@ -395,4 +396,30 @@ Giải thích chi tiết 2 nguyên nhân cốt lõi:
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI phân tích chính xác bản chất tương tác DOM thực tế trên ứng dụng EShop SUT, làm rõ cả 2 khía cạnh: lỗi selector lỏng lẻo và hiện tượng stale DOM rendering.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 29: Cập nhật tiêu đề HTML Report của FR-05 hiển thị MSSV 23127462
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `thêm vào title của html report của FR05 @[html_report/FR05/index.html] Run by: 23127462` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 16:40:13`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã cập nhật thẻ <title> trong tệp html_report/FR05/index.html thành `<title>Playwright Test Report - Run by: 23127462</title>` đáp ứng chuẩn yêu cầu hiển thị "Run by: {StudentID}" của đề bài HW04.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác thẻ title của tệp báo cáo HTML tĩnh của tính năng FR-05 với đầy đủ thông tin mã số sinh viên theo đúng yêu cầu đề bài.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 30: Chèn thanh Banner trực quan cố định hiển thị MSSV 23127462 vào giao diện HTML Report
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `mở lên không thấy title` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `15-08-2026 16:41:08`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Do ứng dụng React của Playwright HTML Report chiếm toàn bộ viewport và tự động kiểm soát document.title/header nội bộ, AI đã chèn thêm một thanh Header Banner cố định ở đỉnh trang (#student-id-banner) với giao diện hiện đại hiển thị trực tiếp: "⚡ Playwright Test Report — FR-05 | 👤 Run by: 23127462 (Nguyễn Minh Quang)", đồng thời kích hoạt script giữ cố định document.title của tab trình duyệt.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác nguyên nhân thẻ `<title>` thuần trong HTML chỉ hiển thị trên tab nhỏ của trình duyệt và có thể bị bundle React ghi đè; từ đó bổ sung banner trực quan nổi bật trên giao diện đáp ứng hoàn hảo yêu cầu chấm bài của giảng viên.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
