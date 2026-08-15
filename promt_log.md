@@ -271,3 +271,8 @@ thêm vào title của html report của FR05 @[html_report/FR05/index.html] Run
 ```text
 mở lên không thấy title
 ```
+
+### [15-08-2026 21:27:57] | Gemini
+```text
+generate test script cho 4 test case đầu của FR-14, truy cập bằng http://localhost:5174/, tài khoản admin: admin@eshop.com / Admin123!, vào tab Danh mục
+```

@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 15-08-2026 16:41:08  
+**Thời gian cập nhật:** 15-08-2026 21:27:57  
 
 ---
 
@@ -422,4 +422,17 @@ Do ứng dụng React của Playwright HTML Report chiếm toàn bộ viewport v
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác nguyên nhân thẻ `<title>` thuần trong HTML chỉ hiển thị trên tab nhỏ của trình duyệt và có thể bị bundle React ghi đè; từ đó bổ sung banner trực quan nổi bật trên giao diện đáp ứng hoàn hảo yêu cầu chấm bài của giảng viên.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 31: Sinh kịch bản kiểm thử tự động cho 4 test case đầu của FR-14 (Quản lý Danh mục)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `generate test script cho 4 test case đầu của FR-14, truy cập bằng http://localhost:5174/, tài khoản admin: admin@eshop.com / Admin123!, vào tab Danh mục` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file` | **Timestamp:** `15-08-2026 21:27:57`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Khám phá ứng dụng Admin Portal tại http://localhost:5174/ qua Playwright MCP, thực hiện đăng nhập admin@eshop.com / Admin123!, điều hướng đến tab "Danh mục", khởi tạo tệp dữ liệu data/fr14_category_data.json và sinh mã kịch bản kiểm thử data-driven test/fr_14.spec.js cho 4 test cases đầu (TC-FR14-001 đến TC-FR14-004) áp dụng 5 mẫu khẳng định (Visibility, ContainText, Validation Boolean, Negative Row Count, Numeric Length Match).
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã khám phá chính xác tương tác trên cổng Admin Portal qua Playwright MCP, thực hiện tiền điều kiện đăng nhập và chuyển tab danh mục trong `test.beforeEach`, tách dữ liệu kiểm thử ra JSON độc lập và triển khai chuẩn xác các assertion bám sát Kết quả mong đợi (ER).
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

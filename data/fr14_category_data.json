@@ -1,0 +1,38 @@
+{
+  "feature": "FR-14: Quản lý Danh mục (Category CRUD)",
+  "baseUrl": "http://localhost:5174/",
+  "adminUser": {
+    "email": "admin@eshop.com",
+    "password": "Admin123!"
+  },
+  "testCases": {
+    "TC_FR14_001": {
+      "caseId": "TC-FR14-001",
+      "title": "Thêm danh mục mới hợp lệ (EC01, LB+1)",
+      "categoryName": "Sách",
+      "expectedHeading": "Quản lý Danh mục",
+      "expectedSuccess": true
+    },
+    "TC_FR14_002": {
+      "caseId": "TC-FR14-002",
+      "title": "Thêm danh mục với tên trống (EC02, LB)",
+      "categoryName": "",
+      "expectedValidation": "required",
+      "expectedErrorMessage": "Tên danh mục là bắt buộc"
+    },
+    "TC_FR14_003": {
+      "caseId": "TC-FR14-003",
+      "title": "Thêm danh mục với tên chỉ chứa khoảng trắng (EC03)",
+      "categoryName": "   ",
+      "expectedValidation": "trimmed_required",
+      "expectedErrorMessage": "Tên danh mục là bắt buộc"
+    },
+    "TC_FR14_004": {
+      "caseId": "TC-FR14-004",
+      "title": "Thêm danh mục với tên dài cận biên trên hợp lệ (BVA)",
+      "categoryNameLength": 255,
+      "categoryPrefix": "Category255Chars_",
+      "expectedSuccess": true
+    }
+  }
+}
