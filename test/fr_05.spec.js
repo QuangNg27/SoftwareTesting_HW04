@@ -69,4 +69,63 @@ test.describe('FR-05: Xem danh sách & Tìm kiếm sản phẩm', () => {
     await expect(page.locator('text=Bàn phím cơ Keychron Q1')).not.toBeVisible();
   });
 
+  test('TC-FR05-005: Tìm kiếm sản phẩm không tồn tại (EC03)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill('Nokia 1280');
+    await page.locator('button:has-text("Tìm")').click();
+
+    // ER 1: Hệ thống không hiển thị sản phẩm nào.
+    await expect(page.locator('text=iPhone 15 Pro Max')).not.toBeVisible();
+    await expect(page.locator('text=Samsung Galaxy S24 Ultra')).not.toBeVisible();
+    await expect(page.locator('text=MacBook Pro M3')).not.toBeVisible();
+    await expect(page.locator('text=Tai nghe AirPods Pro 2')).not.toBeVisible();
+    await expect(page.locator('text=Bàn phím cơ Keychron Q1')).not.toBeVisible();
+
+    // ER 2: Hiển thị màn hình Empty State có icon/hình minh họa và message thân thiện phù hợp.
+    await expect(page.getByText(/không tìm thấy|không có sản phẩm/i)).toBeVisible();
+  });
+
+  test('TC-FR05-006: Tự động cắt bỏ khoảng trắng thừa ở hai đầu từ khóa (EC04)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill('   iPhone 15 Pro Max   ');
+    await page.locator('button:has-text("Tìm")').click();
+
+    // ER 1: Hệ thống tự động bỏ khoảng trắng và tìm ra sản phẩm "iPhone 15 Pro Max".
+    await expect(page.locator('text=iPhone 15 Pro Max').first()).toBeVisible();
+
+    // ER 2: Kết quả hiển thị đúng như khi tìm kiếm không có khoảng trắng thừa (các sản phẩm khác bị ẩn).
+    await expect(page.locator('text=Samsung Galaxy S24 Ultra')).not.toBeVisible();
+    await expect(page.locator('text=MacBook Pro M3')).not.toBeVisible();
+  });
+
+  test('TC-FR05-007: Tìm kiếm với độ dài từ khóa cận biên trên hợp lệ (UB-1)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    const query254 = 'a'.repeat(254);
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill(query254);
+    await page.locator('button:has-text("Tìm")').click();
+
+    // ER 1: Hệ thống tiếp nhận chuỗi tìm kiếm mà không báo lỗi.
+    await expect(page.getByText(`Kết quả tìm kiếm cho: ${query254}`)).toBeVisible();
+
+    // ER 2: Trả về kết quả tìm kiếm Empty State.
+    await expect(page.getByText(/không tìm thấy|không có sản phẩm/i)).toBeVisible();
+  });
+
+  test('TC-FR05-008: Tìm kiếm với độ dài từ khóa chạm biên trên hợp lệ (UB)', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    const query255 = 'a'.repeat(255);
+    await page.locator('input[placeholder="Tìm kiếm..."]').fill(query255);
+    await page.locator('button:has-text("Tìm")').click();
+
+    // ER 1: Hệ thống tiếp nhận chuỗi tìm kiếm bình thường.
+    await expect(page.getByText(`Kết quả tìm kiếm cho: ${query255}`)).toBeVisible();
+
+    // ER 2: Trả về kết quả tìm kiếm Empty State.
+    await expect(page.getByText(/không tìm thấy|không có sản phẩm/i)).toBeVisible();
+  });
+
 });

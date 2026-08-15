@@ -116,3 +116,8 @@ ghi lại nhưng gì tôi đã chỉnh sửa script vào một phần AI Gap Ana
 ```text
 lấy đoạn promt tôi dùng để tạo script bên trên làm thành skill cho tôi
 ```
+
+### [15-08-2026 11:40:43] | Gemini
+```text
+generate script cho 4 test case tiếp theo của FR05
+```

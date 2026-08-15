@@ -2,7 +2,7 @@
 
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
-**Thời gian cập nhật:** 15-08-2026 11:38:14  
+**Thời gian cập nhật:** 15-08-2026 11:40:43  
 
 ---
 
@@ -198,4 +198,21 @@ Khởi tạo thành công Agent Skill mới tên là `playwright-mcp-automation`
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã đóng gói chính xác đoạn prompt mẫu thành một Agent Skill chuẩn có định dạng YAML frontmatter đầy đủ tên, mô tả và quy trình 4 bước hướng dẫn thực hiện, đáp ứng điểm thưởng Mục 7 (Agent Skill) của đề bài HW04.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 14: Sinh kịch bản kiểm thử cho 4 test cases tiếp theo (TC-FR05-005 đến TC-FR05-008) bằng Playwright MCP
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `generate script cho 4 test case tiếp theo của FR05` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp` (`browser_navigate`, `browser_fill_form`, `browser_click`, `browser_snapshot`), `write_to_file` | **Timestamp:** `15-08-2026 11:40:43`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực hiện khám phá tương tác thực tế qua Playwright MCP và cập nhật file test/fr_05.spec.js bổ sung 4 test cases tiếp theo của FR-05:
+- TC-FR05-005: Tìm kiếm sản phẩm không tồn tại ("Nokia 1280") -> Kiểm tra không hiển thị sản phẩm và hiển thị Empty State.
+- TC-FR05-006: Tự động cắt bỏ khoảng trắng thừa ("   iPhone 15 Pro Max   ") -> Kiểm tra tìm ra sản phẩm và ẩn các sản phẩm khác.
+- TC-FR05-007: Tìm kiếm từ khóa dài 254 ký tự (UB-1) -> Kiểm tra tiếp nhận query an toàn và trả về Empty State.
+- TC-FR05-008: Tìm kiếm từ khóa dài 255 ký tự (UB) -> Kiểm tra tiếp nhận query an toàn và trả về Empty State.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã vận dụng Kỹ năng `playwright-mcp-automation`, tương tác trực tiếp với SUT qua Playwright MCP để quan sát phản hồi thực tế và sinh ra 4 test cases bám sát 100% Kết quả mong đợi (ER) từ Báo cáo kiểm thử.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
