@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 15-08-2026 22:03:30  
+**Thời gian cập nhật:** 16-08-2026 20:40:28  
 
 ---
 
@@ -234,7 +234,7 @@ Thực hiện khám phá tương tác thực tế qua Playwright MCP và cập n
 - **1. Prompt + tool (Câu lệnh + Công cụ):** `sao ở webkit thì nó lại pass TC 006` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `15-08-2026 12:01:47`
 - **2. AI output (Kết quả đầu ra của AI):**
 ```text
-Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebKit: Khi bấm Tìm, WebKit đánh giá câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() ngay lập tức khi DOM của trang chủ cũ vẫn còn sản phẩm (cưa kịp nhận API response). Đến khi chuyển sang các lệnh not.toBeVisible() tiếp theo thì API đã trả về làm danh sách trống, dẫn đến toàn bộ assertion Pass sai lệch. Đã khắc phục bằng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` và bổ sung Mục 3.6 vào Report.md.
+Giải thích chi tiết nguyên nhân hiện tượng Race Condition trên WebKit: Khi bấm Tìm, WebKit đánh giá câu lệnh expect(heading 'iPhone 15 Pro Max').toBeVisible() ngay lập tức khi DOM của trang chủ cũ vẫn còn sản phẩm (chưa kịp nhận API response). Đến khi chuyển sang các lệnh not.toBeVisible() tiếp theo thì API đã trả về làm danh sách trống, dẫn đến toàn bộ assertion Pass sai lệch. Đã khắc phục bằng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` và bổ sung Mục 3.6 vào Report.md.
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Stale State & Race Condition do chênh lệch lập lịch microtask/network giữa engine WebKit và Chromium trong kiểm thử đa trình duyệt (Multi-Browser Execution), đồng thời áp dụng giải pháp đồng bộ mạng `waitForResponse` chuẩn của Playwright.
@@ -526,4 +526,22 @@ Phân tích nguyên nhân False Positive: Lệnh `await expect(full256Row).not.t
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã phân tích chính xác hiện tượng Early Assertion Race Condition của `not.toBeVisible()`, chuyển đổi sang kỹ thuật đo độ dài chuỗi thực tế trong CSDL/DOM (`savedText.length <= 255`) bám sát 100% Kết quả mong đợi (ER) và phát hiện đúng Defect thực tế của SUT trên Chrome.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 39: Nâng cấp Agent Skill thành Quy trình Tự động hóa Toàn diện (End-to-End Automation Workflow)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `nâng cấp skill /playwright-mcp-automation thành automation workflow luôn từ tạo script xong rồi tự chạy rồi sửa đổi theo kết quả` | **Công cụ:** Gemini 3.7 Flash / `write_to_file` | **Timestamp:** `16-08-2026 20:40:28`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã nâng cấp toàn diện Agent Skill tại `.agents/skills/playwright-mcp-automation/SKILL.md` thành một Automation Workflow khép kín 5 giai đoạn:
+1. Giai đoạn 1: Khám phá ứng dụng trực tiếp bằng Playwright MCP (Live Browser Exploration).
+2. Giai đoạn 2: Tạo tệp dữ liệu Data-Driven JSON và mã kịch bản Playwright Test (.spec.js) với >= 3 assertion patterns và auto-waiting hooks.
+3. Giai đoạn 3: Thực thi tự động đa trình duyệt (Chromium, Firefox, WebKit).
+4. Giai đoạn 4: Tự động chẩn đoán lỗi & hiệu chỉnh kịch bản (Self-Healing / AI Gap Analysis) với bảng ma trận xử lý False Positive, Timing, Dropped-clicks, WebKit limits vs Real SUT Defects.
+5. Giai đoạn 5: Đồng bộ Báo cáo HTML Report (Banner MSSV 23127462), Report.md và nhật ký AI Audit.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã mở rộng hoàn hảo Agent Skill theo đúng yêu cầu bài toán: bao quát toàn bộ quy trình từ khám phá, sinh mã data-driven, chạy kiểm thử, tự sửa đổi lỗi kịch bản (Self-Healing) dựa trên kết quả chạy thực tế, và đồng bộ hóa tài liệu báo cáo, đạt trọn vẹn điểm thưởng Mục 7 của đề bài HW04.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

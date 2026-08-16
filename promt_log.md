@@ -320,3 +320,18 @@ TC 008 nữa
 ```text
 check lại sao TC 005 lại pass trên chrome
 ```
+
+### [16-08-2026 20:40:28] | Gemini
+```text
+nâng cấp skill /playwright-mcp-automation thành automation workflow luôn từ tạo script xong rồi tự chạy rồi sửa đổi theo kết quả
+```
+
+### [16-08-2026 20:45:56] | Gemini
+```text
+có cần install playwright ở thư mục này để chạy playwright test không
+```
+
+### [16-08-2026 20:49:36] | Gemini
+```text
+thêm vào gitignore mọi thứ của playwright
+```
