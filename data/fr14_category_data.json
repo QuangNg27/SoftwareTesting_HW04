@@ -62,6 +62,32 @@
       "expectedHeaders": ["ID", "Tên Danh Mục", "Hành động"],
       "defaultCategories": ["Điện thoại", "Laptop", "Phụ kiện"],
       "minRowCount": 1
+    },
+    "TC_FR14_009": {
+      "caseId": "TC-FR14-009",
+      "title": "Xóa danh mục hợp lệ không chứa sản phẩm (Thao tác Xóa - EC07)",
+      "tempCategoryName": "TempCategoryToDelete",
+      "expectedSuccess": true
+    },
+    "TC_FR14_010": {
+      "caseId": "TC-FR14-010",
+      "title": "Xóa danh mục đang chứa sản phẩm liên kết (Ràng buộc dữ liệu - EC08)",
+      "linkedCategoryName": "Điện thoại",
+      "expectedWarningMessage": "Không thể xóa danh mục đang có sản phẩm",
+      "shouldPreventDeletion": true
+    },
+    "TC_FR14_011": {
+      "caseId": "TC-FR14-011",
+      "title": "Thêm danh mục trùng tên với danh mục hiện có (EC04)",
+      "existingCategoryName": "Laptop",
+      "expectedErrorMessage": "Tên danh mục đã tồn tại",
+      "maxAllowedCount": 1
+    },
+    "TC_FR14_012": {
+      "caseId": "TC-FR14-012",
+      "title": "Kiểm tra tự động cắt bỏ khoảng trắng thừa 2 đầu khi nhập tên danh mục hợp lệ",
+      "inputCategoryName": "  Tai nghe Bluetooth  ",
+      "expectedTrimmedName": "Tai nghe Bluetooth"
     }
   }
 }

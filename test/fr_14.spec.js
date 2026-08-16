@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
 
-// Nạp dữ liệu kiểm thử từ tệp JSON độc lập (Data-Driven Testing)
+// Đọc bộ dữ liệu kiểm thử từ file JSON độc lập (Data-Driven Testing)
 const testData = JSON.parse(
   fs.readFileSync(new URL('../data/fr14_category_data.json', import.meta.url), 'utf-8')
 );
@@ -49,7 +49,7 @@ test.describe(testData.feature, () => {
 
     // Pattern 2: Visibility & Text Content Assertion (ER: Danh mục mới xuất hiện trong bảng danh sách)
     const categoryRow = page.locator('tbody tr').filter({ hasText: data.categoryName });
-    await expect(categoryRow.first()).toBeVisible();
+    await expect(categoryRow.first()).toBeVisible({ timeout: 5000 });
     await expect(categoryRow.first()).toContainText(data.categoryName);
   });
 
@@ -121,7 +121,7 @@ test.describe(testData.feature, () => {
 
     // ER: Danh mục 255 ký tự được thêm thành công và hiển thị đầy đủ trên bảng
     const longCategoryRow = page.locator('tbody tr').filter({ hasText: longCategoryName });
-    await expect(longCategoryRow.first()).toBeVisible();
+    await expect(longCategoryRow.first()).toBeVisible({ timeout: 5000 });
     await expect(longCategoryRow.first()).toContainText(longCategoryName);
   });
 
@@ -174,7 +174,7 @@ test.describe(testData.feature, () => {
 
     // ER 2: Chuỗi XSS hiển thị an toàn dưới dạng chuỗi văn bản (Plain Text)
     const xssRow = page.locator('tbody tr').filter({ hasText: data.expectedText });
-    await expect(xssRow.first()).toBeVisible();
+    await expect(xssRow.first()).toBeVisible({ timeout: 5000 });
     await expect(xssRow.first()).toContainText(data.expectedText);
   });
 
@@ -188,7 +188,7 @@ test.describe(testData.feature, () => {
     // Pattern: Security & Plain Text Assertion
     // ER: Chuỗi SQLi được lưu nguyên văn dưới dạng text an toàn, hệ thống không bị lỗi crash
     const sqliRow = page.locator('tbody tr').filter({ hasText: data.expectedSavedText });
-    await expect(sqliRow.first()).toBeVisible();
+    await expect(sqliRow.first()).toBeVisible({ timeout: 5000 });
     await expect(sqliRow.first()).toContainText(data.expectedSavedText);
   });
 
@@ -210,6 +210,89 @@ test.describe(testData.feature, () => {
 
     // ER 3: Mỗi dòng danh mục hiển thị nút hành động "Xóa"
     await expect(page.locator('tbody tr button', { hasText: 'Xóa' }).first()).toBeVisible();
+  });
+
+  test(`${testCases.TC_FR14_009.caseId}: ${testCases.TC_FR14_009.title}`, async ({ page }) => {
+    const data = testCases.TC_FR14_009;
+    const uniqueTempCat = `${data.tempCategoryName}_${Date.now()}`;
+
+    // 1. Tạo một danh mục tạm mới không có sản phẩm
+    const nameInput = page.getByPlaceholder('Tên danh mục mới');
+    await nameInput.fill(uniqueTempCat);
+    await page.getByRole('button', { name: 'Thêm mới' }).click();
+
+    // 2. Chờ dòng danh mục tạm xuất hiện trên bảng
+    const targetRow = page.locator('tbody tr').filter({ hasText: uniqueTempCat });
+    await expect(targetRow.first()).toBeVisible({ timeout: 5000 });
+
+    // 3. Nhấn nút "Xóa" trên dòng danh mục đó
+    await targetRow.first().getByRole('button', { name: 'Xóa' }).click();
+
+    // Pattern: Deletion & Invisibility Assertion
+    // ER: Danh mục được xóa thành công và không còn xuất hiện trong bảng danh sách
+    await expect(targetRow).not.toBeVisible({ timeout: 5000 });
+  });
+
+  test(`${testCases.TC_FR14_010.caseId}: ${testCases.TC_FR14_010.title}`, async ({ page }) => {
+    const data = testCases.TC_FR14_010;
+
+    // Đảm bảo danh mục chứa sản phẩm liên kết có mặt trong bảng
+    const linkedRow = page.locator('tbody tr').filter({ hasText: data.linkedCategoryName });
+    if (!(await linkedRow.first().isVisible().catch(() => false))) {
+      await page.getByPlaceholder('Tên danh mục mới').fill(data.linkedCategoryName);
+      await page.getByRole('button', { name: 'Thêm mới' }).click();
+      await expect(linkedRow.first()).toBeVisible({ timeout: 5000 });
+    }
+
+    // Nhấn nút "Xóa" bên cạnh danh mục có chứa sản phẩm
+    await linkedRow.first().getByRole('button', { name: 'Xóa' }).click();
+    await page.waitForTimeout(500);
+
+    // Pattern: Referential Integrity & Constraint Assertion
+    // ER: Hệ thống phải ngăn chặn việc xóa (hiển thị thông báo ràng buộc hoặc giữ nguyên danh mục trên bảng)
+    // Khẳng định danh mục chứa sản phẩm KHÔNG ĐƯỢC PHÉP bị xóa mất
+    await expect(linkedRow.first()).toBeVisible({ timeout: 3000 });
+  });
+
+  test(`${testCases.TC_FR14_011.caseId}: ${testCases.TC_FR14_011.title}`, async ({ page }) => {
+    const data = testCases.TC_FR14_011;
+
+    // Đảm bảo danh mục "Laptop" đã tồn tại sẵn ít nhất 1 dòng
+    const existingRows = page.locator('tbody tr td:nth-child(2)').filter({ hasText: data.existingCategoryName });
+    if (await existingRows.count() === 0) {
+      await page.getByPlaceholder('Tên danh mục mới').fill(data.existingCategoryName);
+      await page.getByRole('button', { name: 'Thêm mới' }).click();
+      await expect(existingRows.first()).toBeVisible({ timeout: 5000 });
+    }
+
+    // Nhập tiếp tên danh mục trùng lặp "Laptop" và bấm "Thêm mới"
+    const nameInput = page.getByPlaceholder('Tên danh mục mới');
+    await nameInput.fill(data.existingCategoryName);
+    await page.getByRole('button', { name: 'Thêm mới' }).click();
+    await page.waitForTimeout(500);
+
+    // Pattern: Uniqueness & Duplicate Prevention Assertion
+    // ER: Hệ thống kiểm tra và ngăn chặn trùng lặp (số dòng có tên "Laptop" tối đa là 1)
+    const duplicateCount = await page.locator('tbody tr td:nth-child(2)').filter({ hasText: data.existingCategoryName }).count();
+    expect(duplicateCount).toBeLessThanOrEqual(data.maxAllowedCount);
+  });
+
+  test(`${testCases.TC_FR14_012.caseId}: ${testCases.TC_FR14_012.title}`, async ({ page }) => {
+    const data = testCases.TC_FR14_012;
+
+    const nameInput = page.getByPlaceholder('Tên danh mục mới');
+    await nameInput.fill(data.inputCategoryName);
+    await page.getByRole('button', { name: 'Thêm mới' }).click();
+
+    // Tìm ô danh mục vừa được thêm
+    const categoryCell = page.locator('tbody tr td:nth-child(2)').filter({ hasText: data.expectedTrimmedName });
+    await expect(categoryCell.first()).toBeVisible({ timeout: 5000 });
+
+    // Pattern: String Normalization & Exact Trim Assertion
+    // ER: Hệ thống tự động cắt bỏ khoảng trắng thừa 2 đầu, lưu đúng chuỗi "Tai nghe Bluetooth"
+    // Sử dụng textContent() để đo chuỗi lưu thực tế trong DOM/CSDL (tránh bị CSS HTML layout tự động collapse khoảng trắng khi dùng innerText)
+    const actualSavedText = await categoryCell.last().textContent();
+    expect(actualSavedText).toBe(data.expectedTrimmedName);
   });
 
 });

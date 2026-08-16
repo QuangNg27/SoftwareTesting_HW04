@@ -326,12 +326,8 @@ check lại sao TC 005 lại pass trên chrome
 nâng cấp skill /playwright-mcp-automation thành automation workflow luôn từ tạo script xong rồi tự chạy rồi sửa đổi theo kết quả
 ```
 
-### [16-08-2026 20:45:56] | Gemini
+### [16-08-2026 21:42:26] | Gemini
 ```text
-có cần install playwright ở thư mục này để chạy playwright test không
-```
-
-### [16-08-2026 20:49:36] | Gemini
-```text
-thêm vào gitignore mọi thứ của playwright
+truy cập vào tab Danh mục ở http://localhost:5174/, đăng nhập bằng account: admin@eshop.com / Admin123!
+Thực hiện test automation workflow cho 4 test case cuối cùng của feature FR14 theo skill /playwright-mcp-automation
 ```

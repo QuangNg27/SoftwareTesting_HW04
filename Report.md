@@ -122,7 +122,8 @@ Trong quá trình sử dụng AI để tự động hóa kịch bản kiểm th�
 
 ## 4. Báo cáo Khả năng Tự động hóa Test Case (Automation Feasibility Assessment)
 
-Đối với tính năng **FR-05 (Xem danh sách & Tìm kiếm sản phẩm)**, toàn bộ **13/13 test cases (100%)** đã được tự động hóa thành công trong tệp `test/fr_05.spec.js`. Không có test case nào bị bỏ sót hay không thể tự động hóa. Chi tiết kỹ thuật áp dụng cho từng test case phức tạp:
+### 4.1. Tính năng FR-05: Xem danh sách & Tìm kiếm sản phẩm
+Toàn bộ **13/13 test cases (100%)** đã được tự động hóa thành công trong tệp [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js) và bộ dữ liệu [data/fr05_search_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr05_search_data.json).
 
 | Mã Test Case | Loại kịch bản | Kỹ thuật Tự động hóa với Playwright API | Đánh giá Khả năng Tự động hóa |
 | :--- | :--- | :--- | :---: |
@@ -133,18 +134,36 @@ Trong quá trình sử dụng AI để tự động hóa kịch bản kiểm th�
 | **TC-FR05-012** | Trạng thái Loading State | Sử dụng `page.route('**/api/products*', ...)` can thiệp và trì hoãn mạng (Network Throttling) để assert spinner/loading indicator. | **100% Hoàn thành** (Đã sinh script) |
 | **TC-FR05-013** | Phím điều hướng Tab Order | Sử dụng `page.keyboard.press('Tab')` tuần tự kết hợp `expect(locator).toBeFocused()` và áp dụng `test.skip` trên WebKit do hạn chế engine headless. | **100% Hoàn thành** (Đã sinh script) |
 
+### 4.2. Tính năng FR-14: Quản lý Danh mục (Category CRUD)
+Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành công trong tệp [test/fr_14.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_14.spec.js) và bộ dữ liệu [data/fr14_category_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr14_category_data.json).
+
+| Mã Test Case | Loại kịch bản | Kỹ thuật Tự động hóa với Playwright API | Đánh giá Khả năng Tự động hóa |
+| :--- | :--- | :--- | :---: |
+| **TC-FR14-001** | Thêm danh mục hợp lệ | Nhập tên `"Sách"`, submit và assert sự xuất hiện của dòng danh mục trong bảng `tbody tr`. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-002** $\rightarrow$ **003** | Tên trống / Khoảng trắng | Kiểm tra thông báo lỗi validation hoặc assert phủ định không xuất hiện dòng rỗng (`/^\s*$/`). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-004** $\rightarrow$ **005** | Biên độ dài (255 & 256 ký tự) | Sinh chuỗi biên độ dài động, kiểm tra hiển thị 255 ký tự và đo độ dài chuỗi lưu thực tế $\le 255$. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-006** | Bảo mật XSS Injection | Lắng nghe `page.on('dialog')` đảm bảo không kích hoạt `alert` và kiểm tra plain text trên bảng. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-007** | Bảo mật SQL Injection | Gửi payload SQLi và assert hệ thống lưu an toàn dưới dạng plain text, không gây lỗi cú pháp. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-008** | Xem danh sách danh mục | Auto-wait dòng đầu tiên, kiểm tra các tiêu đề cột `ID`, `Tên Danh Mục`, `Hành động` và nút `Xóa`. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-009** | Xóa danh mục trống | Tạo danh mục tạm không có sản phẩm, nhấn nút `Xóa` và assert dòng biến mất (`not.toBeVisible()`). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-010** | Xóa danh mục chứa sản phẩm | Nhấn `Xóa` trên danh mục `"Điện thoại"`, assert hệ thống ngăn chặn xóa (danh mục vẫn còn tồn tại). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-011** | Thêm danh mục trùng tên | Nhập trùng tên `"Laptop"`, submit và assert số lượng dòng danh mục có tên này tối đa là 1 (`<= 1`). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR14-012** | Cắt khoảng trắng 2 đầu | Nhập `"  Tai nghe Bluetooth  "`, assert hệ thống cắt tỉa chính xác thành `"Tai nghe Bluetooth"`. | **100% Hoàn thành** (Đã sinh script) |
+
 ---
 
 ## 5. Thiết kế Kiểm thử Theo Dữ liệu & Các Mẫu Khẳng định (Data-Driven Testing & Assertion Patterns)
 
 ### 5.1. Cơ chế Data-Driven Testing (Tách biệt Dữ liệu và Kịch bản)
-* **Tệp dữ liệu kiểm thử:** Toàn bộ dữ liệu đầu vào (keywords, payloads, chuỗi biên, delay...) và kết quả mong đợi được tách rời 100% ra khỏi kịch bản và lưu tại tệp JSON độc lập: [data/fr05_search_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr05_search_data.json).
-* **Kịch bản thực thi:** Kịch bản [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js) nạp dữ liệu trực tiếp thông qua câu lệnh `import testData from '../data/fr05_search_data.json' assert { type: 'json' }`, tuyệt đối không hardcode mảng dữ liệu nội dòng trong kịch bản.
+* **Tệp dữ liệu kiểm thử:**
+  - FR-05: [data/fr05_search_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr05_search_data.json) (13 Test Cases).
+  - FR-14: [data/fr14_category_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr14_category_data.json) (12 Test Cases).
+* **Cơ chế Nạp Dữ liệu Tương thích Phổ quát:** Cả hai kịch bản [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js) và [test/fr_14.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_14.spec.js) đều sử dụng `fs.readFileSync(new URL(..., import.meta.url))` kết hợp `JSON.parse()`, tương thích 100% với môi trường Node.js 20+ ESM, tuyệt đối không hardcode mảng dữ liệu nội dòng trong kịch bản.
 
 ### 5.2. Đa dạng hóa 5 Mẫu Khẳng định (5 Distinct Assertion Patterns)
 Kịch bản tự động hóa áp dụng ít nhất 5 mẫu khẳng định khác nhau của Playwright Test API theo đúng tiêu chuẩn Mục 5 của đề bài HW04:
 1. **Mẫu 1 — Khẳng định Trạng thái Hiển thị / Ẩn (Visibility / Invisibility State):** `expect(locator).toBeVisible()`, `expect(locator).not.toBeVisible()`.
-2. **Mẫu 2 — Khẳng định Số lượng / Cấu trúc DOM (Count & Comparison):** `expect(locator).toHaveCount(n)`, `expect(count).toBeGreaterThanOrEqual(min)`.
-3. **Mẫu 3 — Khẳng định Khớp Biểu thức Chính quy (RegExp Text Match):** `expect(page.getByText(new RegExp(...))).toBeVisible()`.
+2. **Mẫu 2 — Khẳng định Số lượng & So sánh Cấu trúc DOM (Count & Comparison):** `expect(locator).toHaveCount(n)`, `expect(count).toBeGreaterThanOrEqual(min)`.
+3. **Mẫu 3 — Khẳng định Khớp Biểu thức Chính quy / Chuỗi Văn bản (RegExp & Text Match):** `expect(page.getByText(new RegExp(...))).toBeVisible()`, `expect(locator).toContainText(...)`.
 4. **Mẫu 4 — Khẳng định Giá trị Số học & Biên Độ dài (Numeric Boundary Comparison):** `expect(actualLength).toBeLessThanOrEqual(maxLimit)`.
-5. **Mẫu 5 — Khẳng định Trạng thái Focus & Logic Boolean (Focus & Boolean Assertions):** `expect(locator).toBeFocused()`, `expect(dialogTriggered).toBe(false)`.
+5. **Mẫu 5 — Khẳng định Trạng thái Focus, Dialog & Logic Boolean (Focus, Dialog & Boolean Assertions):** `expect(locator).toBeFocused()`, `expect(dialogTriggered).toBe(false)`, `expect(hasValidationError).toBe(true)`.

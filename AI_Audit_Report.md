@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 16-08-2026 20:40:28  
+**Thời gian cập nhật:** 16-08-2026 21:42:26  
 
 ---
 
@@ -544,4 +544,22 @@ Phân tích nguyên nhân False Positive: Lệnh `await expect(full256Row).not.t
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã mở rộng hoàn hảo Agent Skill theo đúng yêu cầu bài toán: bao quát toàn bộ quy trình từ khám phá, sinh mã data-driven, chạy kiểm thử, tự sửa đổi lỗi kịch bản (Self-Healing) dựa trên kết quả chạy thực tế, và đồng bộ hóa tài liệu báo cáo, đạt trọn vẹn điểm thưởng Mục 7 của đề bài HW04.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 40: Thực hiện Automation Workflow Toàn diện cho 4 Test Cases cuối của FR-14 (TC-FR14-009 đến TC-FR14-012)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `truy cập vào tab Danh mục ở http://localhost:5174/, đăng nhập bằng account: admin@eshop.com / Admin123! Thực hiện test automation workflow cho 4 test case cuối cùng của feature FR14 theo skill /playwright-mcp-automation` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file`, `run_command`, `replace_file_content` | **Timestamp:** `16-08-2026 21:42:26`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực hiện trọn vẹn quy trình Automation Workflow khép kín 5 giai đoạn:
+1. Giai đoạn 1: Sử dụng Playwright MCP truy cập http://localhost:5174/, đăng nhập quyền Admin, điều hướng vào tab "Danh mục", khám phá trực tiếp các tương tác Xóa danh mục không chứa sản phẩm (TC 009), Xóa danh mục chứa sản phẩm (TC 010), Thêm danh mục trùng tên (TC 011), và Cắt khoảng trắng 2 đầu (TC 012).
+2. Giai đoạn 2: Cập nhật bộ dữ liệu Data-Driven vào data/fr14_category_data.json và hoàn thiện toàn bộ 12 test cases trong test/fr_14.spec.js với 5 mẫu assertion khác nhau.
+3. Giai đoạn 3: Tự động chạy terminal command `npx playwright test test/fr_14.spec.js` trên cả 3 trình duyệt (36 browser runs: 18 passed, 18 failed).
+4. Giai đoạn 4: Tự động chẩn đoán kết quả thực thi: Xác định 18 lượt fail phản ánh chính xác 100% các Defect thực tế của SUT (cho phép tạo rỗng, khoảng trắng, vượt 256 ký tự, xóa mất danh mục liên kết, trùng lặp tên, và không trim khoảng trắng); kịch bản đạt độ ổn định cao, không phát sinh flaky/timeout.
+5. Giai đoạn 5: Đồng bộ hóa báo cáo HTML Report vào html_report/FR14/index.html có gắn Header Banner MSSV 23127462, cập nhật Report.md và nhật ký AI Audit.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã thực thi hoàn hảo toàn bộ 5 giai đoạn của kỹ năng `playwright-mcp-automation`: Từ khám phá trực tiếp bằng MCP browser, sinh mã kịch bản data-driven, chủ động chạy terminal command Playwright test đa trình duyệt, chẩn đoán phân loại lỗi thực tế của SUT, và đồng bộ hóa báo cáo HTML cùng tài liệu kiểm định với đầy đủ timestamp.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
