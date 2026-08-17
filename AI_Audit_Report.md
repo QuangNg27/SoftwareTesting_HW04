@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 16-08-2026 21:42:26  
+**Thời gian cập nhật:** 17-08-2026 21:33:07  
 
 ---
 
@@ -562,4 +562,21 @@ Thực hiện trọn vẹn quy trình Automation Workflow khép kín 5 giai đo�
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã thực thi hoàn hảo toàn bộ 5 giai đoạn của kỹ năng `playwright-mcp-automation`: Từ khám phá trực tiếp bằng MCP browser, sinh mã kịch bản data-driven, chủ động chạy terminal command Playwright test đa trình duyệt, chẩn đoán phân loại lỗi thực tế của SUT, và đồng bộ hóa báo cáo HTML cùng tài liệu kiểm định với đầy đủ timestamp.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 41: Thực hiện Automation Workflow cho 6 Test Cases đầu của FR-09 (Mã Giảm Giá)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `sử dụng tài khoản (test@eshop.com / Test1234!), đăng nhập vào http://localhost:5173/ tự thêm sản phẩm phù hợp rồi thực hiện test automation workflow cho 6 test case đầu của feature FR09 theo mô tả trong @[Report.md]` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file`, `run_command`, `replace_file_content` | **Timestamp:** `17-08-2026 21:33:07`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực hiện toàn diện quy trình Automation Workflow 5 giai đoạn cho tính năng FR-09:
+1. Giai đoạn 1: Dùng Playwright MCP đăng nhập tài khoản test@eshop.com / Test1234! trên http://localhost:5173/, khám phá quy trình thêm sản phẩm vào giỏ hàng và áp dụng các mã giảm giá SAVE10, BIGBUY, INVALID999, DISABLED10, EXPIRED, và SAVE10 dưới giá trị tối thiểu.
+2. Giai đoạn 2: Tạo bộ dữ liệu Data-Driven tại data/fr09_coupon_data.json và khởi tạo kịch bản test/fr_09.spec.js bao phủ 6 test cases với 5 mẫu assertion khác nhau.
+3. Giai đoạn 3 & 4: Tự động chạy `npx playwright test test/fr_09.spec.js` trên cả 3 trình duyệt (18 browser runs: 12 passed, 6 failed). Tự chẩn đoán và hiệu chỉnh kịch bản (Self-Healing) đảm bảo độ tin cậy; phát hiện chính xác các Defect thực tế của SUT (TC 001 tính sai tiền tiết kiệm âm, TC 002 chặn nhầm đơn hàng đạt đúng 500,000 ₫).
+4. Giai đoạn 5: Đồng bộ hóa báo cáo HTML Report vào html_report/FR09/index.html có gắn Header Banner MSSV 23127462 và cập nhật nhật ký AI Audit.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã thực thi hoàn chỉnh quy trình tự động hóa khép kín: Khám phá trực tiếp bằng MCP, tạo dataset Data-Driven, viết spec tự động thêm sản phẩm vào giỏ/checkout, tự chạy test đa trình duyệt, tự động hiệu chỉnh xử lý bất đồng bộ trong giỏ hàng (Self-Healing), bắt đúng 100% Defect của SUT và xuất báo cáo HTML đầy đủ banner sinh viên.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

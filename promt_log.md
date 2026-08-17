@@ -331,3 +331,8 @@ nâng cấp skill /playwright-mcp-automation thành automation workflow luôn t�
 truy cập vào tab Danh mục ở http://localhost:5174/, đăng nhập bằng account: admin@eshop.com / Admin123!
 Thực hiện test automation workflow cho 4 test case cuối cùng của feature FR14 theo skill /playwright-mcp-automation
 ```
+
+### [17-08-2026 21:33:07] | Gemini
+```text
+sử dụng tài khoản (test@eshop.com / Test1234!), đăng nhập vào http://localhost:5173/ tự thêm sản phẩm phù hợp rồi thực hiện test automation workflow cho 6 test case đầu của feature FR09 theo mô tả trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md]
+```

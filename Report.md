@@ -150,6 +150,18 @@ Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành c�
 | **TC-FR14-011** | Thêm danh mục trùng tên | Nhập trùng tên `"Laptop"`, submit và assert số lượng dòng danh mục có tên này tối đa là 1 (`<= 1`). | **100% Hoàn thành** (Đã sinh script) |
 | **TC-FR14-012** | Cắt khoảng trắng 2 đầu | Nhập `"  Tai nghe Bluetooth  "`, assert hệ thống cắt tỉa chính xác thành `"Tai nghe Bluetooth"`. | **100% Hoàn thành** (Đã sinh script) |
 
+### 4.3. Tính năng FR-09: Mã Giảm Giá (Coupon)
+Đã tự động hóa thành công **6 test cases đầu tiên** trong tệp [test/fr_09.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_09.spec.js) và bộ dữ liệu [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json).
+
+| Mã Test Case | Loại kịch bản | Kỹ thuật Tự động hóa với Playwright API | Đánh giá Khả năng Tự động hóa |
+| :--- | :--- | :--- | :---: |
+| **TC-FR09-001** | Mã phần trăm hợp lệ (`SAVE10`) | Tự động thêm sản phẩm `Tai nghe Havit` (500k), nhập `SAVE10`, assert giảm 10% (50k) và tổng 450k. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-002** | Mã cố định hợp lệ (`BIGBUY`) | Thêm sản phẩm 500k, nhập `BIGBUY`, assert giảm 50k và tổng 450k. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-003** | Mã không tồn tại (`INVALID999`) | Nhập mã không tồn tại, assert thông báo lỗi `"không tồn tại"` và tổng tiền không đổi (500k). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-004** | Mã bị vô hiệu hóa (`DISABLED10`) | Nhập mã bị disable, assert thông báo lỗi `"vô hiệu hóa"` và tổng tiền không đổi (500k). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-005** | Mã hết hạn (`EXPIRED`) | Nhập mã đã qua ngày hết hạn, assert thông báo lỗi `"hết hạn"` và tổng tiền không đổi (500k). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-006** | Dưới giá trị tối thiểu (BVA) | Thêm `Lót chuột Gaming` (100k < 300k), nhập `SAVE10`, assert lỗi `"giá trị tối thiểu"` và tổng 100k. | **100% Hoàn thành** (Đã sinh script) |
+
 ---
 
 ## 5. Thiết kế Kiểm thử Theo Dữ liệu & Các Mẫu Khẳng định (Data-Driven Testing & Assertion Patterns)
@@ -158,7 +170,8 @@ Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành c�
 * **Tệp dữ liệu kiểm thử:**
   - FR-05: [data/fr05_search_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr05_search_data.json) (13 Test Cases).
   - FR-14: [data/fr14_category_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr14_category_data.json) (12 Test Cases).
-* **Cơ chế Nạp Dữ liệu Tương thích Phổ quát:** Cả hai kịch bản [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js) và [test/fr_14.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_14.spec.js) đều sử dụng `fs.readFileSync(new URL(..., import.meta.url))` kết hợp `JSON.parse()`, tương thích 100% với môi trường Node.js 20+ ESM, tuyệt đối không hardcode mảng dữ liệu nội dòng trong kịch bản.
+  - FR-09: [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json) (6 Test Cases đầu).
+* **Cơ chế Nạp Dữ liệu Tương thích Phổ quát:** Toàn bộ các kịch bản [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js), [test/fr_14.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_14.spec.js), và [test/fr_09.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_09.spec.js) đều sử dụng `fs.readFileSync(new URL(..., import.meta.url))` kết hợp `JSON.parse()`, tương thích 100% với môi trường Node.js 20+ ESM, tuyệt đối không hardcode mảng dữ liệu nội dòng trong kịch bản.
 
 ### 5.2. Đa dạng hóa 5 Mẫu Khẳng định (5 Distinct Assertion Patterns)
 Kịch bản tự động hóa áp dụng ít nhất 5 mẫu khẳng định khác nhau của Playwright Test API theo đúng tiêu chuẩn Mục 5 của đề bài HW04:

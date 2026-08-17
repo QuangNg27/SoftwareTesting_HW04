@@ -1,0 +1,66 @@
+{
+  "feature": "FR-09: Mã Giảm Giá (Coupon)",
+  "baseUrl": "http://localhost:5173",
+  "customerUser": {
+    "email": "test@eshop.com",
+    "password": "Test1234!"
+  },
+  "testCases": {
+    "TC_FR09_001": {
+      "caseId": "TC-FR09-001",
+      "title": "Áp dụng mã giảm giá theo tỷ lệ phần trăm (percent) hợp lệ (EC01, EC04, EC06, EC08, EC10, EC12)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "SAVE10",
+      "expectedDiscountText": "50,000 ₫",
+      "expectedFinalTotal": "450,000 ₫",
+      "expectedSuccessMessage": "Áp dụng thành công!"
+    },
+    "TC_FR09_002": {
+      "caseId": "TC-FR09-002",
+      "title": "Áp dụng mã giảm giá cố định (fixed) hợp lệ (EC01, EC04, EC06, EC08, EC10, EC13)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "BIGBUY",
+      "expectedDiscountText": "50,000 ₫",
+      "expectedFinalTotal": "450,000 ₫",
+      "expectedSuccessMessage": "Áp dụng thành công!"
+    },
+    "TC_FR09_003": {
+      "caseId": "TC-FR09-003",
+      "title": "Kiểm tra mã giảm giá không tồn tại trong hệ thống (EC03)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "INVALID999",
+      "expectedErrorMessage": "Mã giảm giá không tồn tại",
+      "expectedFinalTotal": "500,000 ₫"
+    },
+    "TC_FR09_004": {
+      "caseId": "TC-FR09-004",
+      "title": "Kiểm tra mã giảm giá tồn tại nhưng bị vô hiệu hóa (EC02)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "DISABLED10",
+      "expectedErrorMessage": "vô hiệu hóa",
+      "expectedFinalTotal": "500,000 ₫"
+    },
+    "TC_FR09_005": {
+      "caseId": "TC-FR09-005",
+      "title": "Kiểm tra mã giảm giá đã hết hạn sử dụng (EC05)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "EXPIRED",
+      "expectedErrorMessage": "Mã giảm giá đã hết hạn",
+      "expectedFinalTotal": "500,000 ₫"
+    },
+    "TC_FR09_006": {
+      "caseId": "TC-FR09-006",
+      "title": "Kiểm tra đơn hàng không đạt giá trị tối thiểu (BVA - Dưới biên C3)",
+      "productName": "Lót chuột Gaming Speed RGB 80x30cm",
+      "originalTotal": "100,000 ₫",
+      "couponCode": "SAVE10",
+      "expectedErrorMessage": "giá trị tối thiểu",
+      "expectedFinalTotal": "100,000 ₫"
+    }
+  }
+}
