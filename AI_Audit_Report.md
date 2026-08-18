@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 17-08-2026 21:33:07  
+**Thời gian cập nhật:** 18-08-2026 22:07:59  
 
 ---
 
@@ -579,4 +579,47 @@ Thực hiện toàn diện quy trình Automation Workflow 5 giai đoạn cho tí
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã thực thi hoàn chỉnh quy trình tự động hóa khép kín: Khám phá trực tiếp bằng MCP, tạo dataset Data-Driven, viết spec tự động thêm sản phẩm vào giỏ/checkout, tự chạy test đa trình duyệt, tự động hiệu chỉnh xử lý bất đồng bộ trong giỏ hàng (Self-Healing), bắt đúng 100% Defect của SUT và xuất báo cáo HTML đầy đủ banner sinh viên.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 42: Hoàn thiện Automation Workflow cho toàn bộ 13 Test Cases của FR-09 (Mã Giảm Giá)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `tiếp tục thực hiện cho các test case còn lại của FR-09` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `write_to_file`, `run_command`, `replace_file_content` | **Timestamp:** `18-08-2026 21:41:15`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực hiện trọn vẹn quy trình Automation Workflow khép kín 5 giai đoạn cho toàn bộ 13 test cases của FR-09:
+1. Giai đoạn 1: Sử dụng Playwright MCP khám phá trực tiếp các kịch bản: Đơn hàng bằng giá trị tối thiểu (TC 007), Khách vãng lai chưa đăng nhập (TC 008), Quá hạn mức sử dụng cá nhân (TC 009), Lượt sử dụng hợp lệ (TC 010), Giảm giá cố định vượt tổng tiền đơn hàng (TC 011), Tự động cắt khoảng trắng 2 đầu (TC 012), và Đăng xuất tại trang checkout (TC 013).
+2. Giai đoạn 2: Cập nhật trọn vẹn 13 test cases vào data/fr09_coupon_data.json và test/fr_09.spec.js với 5 mẫu assertion khác nhau.
+3. Giai đoạn 3 & 4: Tự động chạy `npx playwright test test/fr_09.spec.js` trên Chromium, Firefox, WebKit (39 browser runs: 24 passed, 15 failed). Tự chẩn đoán và hiệu chỉnh kịch bản (Self-Healing: lọc selector strong cho số tiền giảm giá để tránh strict mode violation). Kết quả 15 lượt fail bắt trúng 100% Defect thực tế của SUT (TC 001, 002, 007, 011, 013).
+4. Giai đoạn 5: Đồng bộ hóa toàn bộ Báo cáo HTML vào html_report/FR09/index.html có gắn Header Banner MSSV 23127462, cập nhật Mục 4.3 & 5.1 trong Report.md và ghi nhận nhật ký AI Audit.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã mở rộng hoàn hảo toàn bộ 13 test cases cho FR-09, tự động thực thi đa trình duyệt (39 browser runs), áp dụng cơ chế tự sửa đổi kịch bản (Self-Healing) với Playwright locator filter, bắt chính xác 100% các lỗi nghiệp vụ của SUT và đồng bộ hóa đầy đủ báo cáo HTML có banner MSSV cùng tài liệu dự án.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 43: Hiệu chỉnh Khẳng định Bắt Dialog Alert Yêu cầu Đăng nhập cho TC-FR09-008
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `chỉnh lại script của test case TC-FR09-008 là thấy alert yêu cầu đăng nhập` | **Công cụ:** Gemini 3.7 Flash / `playwright_mcp`, `replace_file_content`, `run_command` | **Timestamp:** `18-08-2026 22:01:53`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Khám phá tương tác trực tiếp qua Playwright MCP và cập nhật TC-FR09-008 trong test/fr_09.spec.js: Tích hợp bộ lắng nghe sự kiện `page.once('dialog', ...)` để bắt chính xác hộp thoại alert native "Bạn cần đăng nhập để thanh toán!" khi khách vãng lai bấm "Tiến hành thanh toán" trên trang giỏ hàng. Khẳng định nội dung tin nhắn alert và điều hướng sang trang Login/Register. Thực thi kiểm thử tự động đa trình duyệt đạt Pass 100% trên Chromium, Firefox, WebKit và đồng bộ HTML report.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác kịch bản Playwright Test để kiểm định trọn vẹn cả 2 khía cạnh: sự xuất hiện của hộp thoại dialog alert native với đúng nội dung thông điệp và điều hướng trang sau khi người dùng chấp thuận dialog, đảm bảo kịch bản chạy ổn định tuyệt đối trên cả 3 engine trình duyệt.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 44: Hiệu chỉnh Khẳng định Bắt Dialog Alert Yêu cầu Đăng nhập cho TC-FR09-013 (Đăng xuất tại Checkout)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `chỉnh script của TC-FR09-013 cũng check alert đăng nhập` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content`, `run_command` | **Timestamp:** `18-08-2026 22:07:59`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Cập nhật data/fr09_coupon_data.json bổ sung `expectedAlertMessage: "Bạn cần đăng nhập để thanh toán!"` và nâng cấp kịch bản TC-FR09-013 trong test/fr_09.spec.js: Tích hợp `page.once('dialog', ...)` để lắng nghe hộp thoại alert yêu cầu đăng nhập khi người dùng cố gắng áp dụng mã giảm giá sau khi đã nhấn "Thoát" (đăng xuất) tại trang Checkout. Tự động thực thi `npx playwright test` đa trình duyệt (Chromium, Firefox, WebKit): Kịch bản phát hiện chính xác 100% Defect của SUT (SUT không hiển thị alert đăng nhập mà vẫn cho phép áp dụng mã giảm giá thành công khi đã đăng xuất -> Báo FAIL chính xác theo ER) và đồng bộ báo cáo HTML.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác kịch bản Playwright Test theo yêu cầu kiểm tra dialog alert yêu cầu đăng nhập. Khi thực thi trên SUT thực tế bị lỗi, kịch bản báo Fail chính xác do hệ thống bỏ qua kiểm tra phiên đăng nhập và không bật alert, khớp 100% với Kết quả mong đợi (ER) và Báo cáo lỗi (Defect Report).
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

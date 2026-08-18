@@ -336,3 +336,18 @@ Thực hiện test automation workflow cho 4 test case cuối cùng của featur
 ```text
 sử dụng tài khoản (test@eshop.com / Test1234!), đăng nhập vào http://localhost:5173/ tự thêm sản phẩm phù hợp rồi thực hiện test automation workflow cho 6 test case đầu của feature FR09 theo mô tả trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md]
 ```
+
+### [18-08-2026 21:41:15] | Gemini
+```text
+tiếp tục thực hiện cho các test case còn lại của FR-09
+```
+
+### [18-08-2026 22:01:53] | Gemini
+```text
+chỉnh lại script của test case TC-FR09-008 là thấy alert yêu cầu đăng nhập
+```
+
+### [18-08-2026 22:07:59] | Gemini
+```text
+chỉnh script của TC-FR09-013 cũng check alert đăng nhập
+```

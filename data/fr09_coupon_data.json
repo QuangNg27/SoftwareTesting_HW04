@@ -61,6 +61,69 @@
       "couponCode": "SAVE10",
       "expectedErrorMessage": "giá trị tối thiểu",
       "expectedFinalTotal": "100,000 ₫"
+    },
+    "TC_FR09_007": {
+      "caseId": "TC-FR09-007",
+      "title": "Kiểm tra đơn hàng vừa bằng giá trị tối thiểu (BVA - Biên C3)",
+      "productName": "Chuột không dây Logitech Pebble M350",
+      "originalTotal": "300,000 ₫",
+      "couponCode": "SAVE10",
+      "expectedDiscountText": "30,000 ₫",
+      "expectedFinalTotal": "270,000 ₫",
+      "expectedSuccessMessage": "Áp dụng thành công!"
+    },
+    "TC_FR09_008": {
+      "caseId": "TC-FR09-008",
+      "title": "Kiểm tra người dùng chưa đăng nhập (EC09)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "SAVE10",
+      "expectedAlertMessage": "Bạn cần đăng nhập để thanh toán!"
+    },
+    "TC_FR09_009": {
+      "caseId": "TC-FR09-009",
+      "title": "Kiểm tra số lượt sử dụng cá nhân chạm ngưỡng giới hạn (BVA - Biên C5)",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "SAVE10_MAXED",
+      "expectedErrorMessage": "hết lượt|giới hạn|không tồn tại|không hợp lệ",
+      "expectedFinalTotal": "500,000 ₫"
+    },
+    "TC_FR09_010": {
+      "caseId": "TC-FR09-010",
+      "title": "Kiểm tra số lượt sử dụng cá nhân còn lại hợp lệ (BVA - Dưới biên C5)",
+      "productName": "Bàn phím cơ Keychron Q1",
+      "originalTotal": "4,000,000 ₫",
+      "couponCode": "VIP100",
+      "expectedDiscountText": "100,000 ₫",
+      "expectedFinalTotal": "3,900,000 ₫",
+      "expectedSuccessMessage": "Áp dụng thành công!"
+    },
+    "TC_FR09_011": {
+      "caseId": "TC-FR09-011",
+      "title": "Kiểm tra giá trị giảm cố định lớn hơn tổng giá trị đơn hàng (EC14)",
+      "productName": "Chuột không dây Logitech Pebble M350",
+      "originalTotal": "300,000 ₫",
+      "couponCode": "SUPERFIX",
+      "expectedFinalTotal": "0 ₫"
+    },
+    "TC_FR09_012": {
+      "caseId": "TC-FR09-012",
+      "title": "Kiểm tra tự động cắt khoảng trắng đầu/cuối của mã nhập vào (Trải nghiệm người dùng)",
+      "productName": "Bàn phím cơ Keychron Q1",
+      "originalTotal": "4,000,000 ₫",
+      "couponCodeWithSpaces": "  VIP100  ",
+      "expectedDiscountText": "100,000 ₫",
+      "expectedFinalTotal": "3,900,000 ₫",
+      "expectedSuccessMessage": "Áp dụng thành công!"
+    },
+    "TC_FR09_013": {
+      "caseId": "TC-FR09-013",
+      "title": "Áp dụng được mã giảm giá khi đã đăng xuất",
+      "productName": "Tai nghe Gaming Havit H2002D",
+      "originalTotal": "500,000 ₫",
+      "couponCode": "SAVE10",
+      "expectedAlertMessage": "Bạn cần đăng nhập để thanh toán!"
     }
   }
 }

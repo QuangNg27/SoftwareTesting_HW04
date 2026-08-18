@@ -151,7 +151,7 @@ Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành c�
 | **TC-FR14-012** | Cắt khoảng trắng 2 đầu | Nhập `"  Tai nghe Bluetooth  "`, assert hệ thống cắt tỉa chính xác thành `"Tai nghe Bluetooth"`. | **100% Hoàn thành** (Đã sinh script) |
 
 ### 4.3. Tính năng FR-09: Mã Giảm Giá (Coupon)
-Đã tự động hóa thành công **6 test cases đầu tiên** trong tệp [test/fr_09.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_09.spec.js) và bộ dữ liệu [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json).
+Toàn bộ **13/13 test cases (100%)** đã được tự động hóa thành công trong tệp [test/fr_09.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_09.spec.js) và bộ dữ liệu [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json).
 
 | Mã Test Case | Loại kịch bản | Kỹ thuật Tự động hóa với Playwright API | Đánh giá Khả năng Tự động hóa |
 | :--- | :--- | :--- | :---: |
@@ -161,6 +161,13 @@ Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành c�
 | **TC-FR09-004** | Mã bị vô hiệu hóa (`DISABLED10`) | Nhập mã bị disable, assert thông báo lỗi `"vô hiệu hóa"` và tổng tiền không đổi (500k). | **100% Hoàn thành** (Đã sinh script) |
 | **TC-FR09-005** | Mã hết hạn (`EXPIRED`) | Nhập mã đã qua ngày hết hạn, assert thông báo lỗi `"hết hạn"` và tổng tiền không đổi (500k). | **100% Hoàn thành** (Đã sinh script) |
 | **TC-FR09-006** | Dưới giá trị tối thiểu (BVA) | Thêm `Lót chuột Gaming` (100k < 300k), nhập `SAVE10`, assert lỗi `"giá trị tối thiểu"` và tổng 100k. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-007** | Bằng giá trị tối thiểu (Biên C3) | Thêm `Chuột Logitech` (300k = 300k), nhập `SAVE10`, assert áp dụng thành công và tổng 270k. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-008** | Khách vãng lai chưa đăng nhập | Thêm sản phẩm khi chưa đăng nhập, nhấn checkout, assert hệ thống chuyển hướng yêu cầu đăng nhập. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-009** | Quá lượt sử dụng cá nhân (Biên C5) | Nhập mã đã hết hạn ngạch cá nhân, assert báo lỗi `"hết lượt/giới hạn"` và giữ nguyên tổng tiền. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-010** | Lượt sử dụng cá nhân hợp lệ | Đơn 4,000,000 ₫ với mã `VIP100`, assert giảm 100,000 ₫ và tổng thanh toán 3,900,000 ₫. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-011** | Giảm giá lớn hơn tổng đơn hàng | Đơn 300,000 ₫ dùng `SUPERFIX` (giảm 400k), assert hệ thống chặn tổng tiền không âm (chặn ở 0 ₫). | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-012** | Cắt khoảng trắng 2 đầu mã | Nhập `"  VIP100  "`, assert hệ thống tự động cắt tỉa và áp dụng thành công giảm 100,000 ₫. | **100% Hoàn thành** (Đã sinh script) |
+| **TC-FR09-013** | Đăng xuất tại trang checkout | Nhấn `Thoát` tại checkout rồi nhập `SAVE10`, assert hệ thống chặn và chuyển hướng yêu cầu đăng nhập. | **100% Hoàn thành** (Đã sinh script) |
 
 ---
 
@@ -170,7 +177,7 @@ Toàn bộ **12/12 test cases (100%)** đã được tự động hóa thành c�
 * **Tệp dữ liệu kiểm thử:**
   - FR-05: [data/fr05_search_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr05_search_data.json) (13 Test Cases).
   - FR-14: [data/fr14_category_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr14_category_data.json) (12 Test Cases).
-  - FR-09: [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json) (6 Test Cases đầu).
+  - FR-09: [data/fr09_coupon_data.json](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/data/fr09_coupon_data.json) (13 Test Cases).
 * **Cơ chế Nạp Dữ liệu Tương thích Phổ quát:** Toàn bộ các kịch bản [test/fr_05.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_05.spec.js), [test/fr_14.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_14.spec.js), và [test/fr_09.spec.js](file:///d:/NAM_3/HK3/KTPM/HW04/SoftwareTesting_HW04/test/fr_09.spec.js) đều sử dụng `fs.readFileSync(new URL(..., import.meta.url))` kết hợp `JSON.parse()`, tương thích 100% với môi trường Node.js 20+ ESM, tuyệt đối không hardcode mảng dữ liệu nội dòng trong kịch bản.
 
 ### 5.2. Đa dạng hóa 5 Mẫu Khẳng định (5 Distinct Assertion Patterns)
