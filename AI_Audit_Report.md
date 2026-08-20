@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 18-08-2026 22:07:59  
+**Thời gian cập nhật:** 20-08-2026 21:54:13  
 
 ---
 
@@ -622,4 +622,83 @@ Cập nhật data/fr09_coupon_data.json bổ sung `expectedAlertMessage: "Bạn 
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác kịch bản Playwright Test theo yêu cầu kiểm tra dialog alert yêu cầu đăng nhập. Khi thực thi trên SUT thực tế bị lỗi, kịch bản báo Fail chính xác do hệ thống bỏ qua kiểm tra phiên đăng nhập và không bật alert, khớp 100% với Kết quả mong đợi (ER) và Báo cáo lỗi (Defect Report).
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 45: Cập nhật Báo cáo Lỗi bug_report.md theo Môi trường HW04 và Đồng bộ Minh chứng từ GitHub Issues
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `cập nhật lại @[bug_report.md] theo môi trường của bài HW này, xem các issue của các feature FR05, FR09, FR14 trên D:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\html_report\FR14\index.html rồi copy lại vào issue của repo này đặc biệt là mấy cái minh chứng` | **Công cụ:** Gemini 3.7 Flash / `read_url_content`, `write_to_file` | **Timestamp:** `20-08-2026 21:26:41`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Cập nhật toàn diện tệp bug_report.md:
+1. Chuẩn hóa môi trường kiểm thử HW04: Windows 11 x64, Multi-browser (Chromium v145.0, Firefox v146.0, WebKit v26.0), Node.js v20.18.0, Playwright Test v1.58.2, SUT (Frontend port 5173, Admin port 5174, Backend port 3000).
+2. Cập nhật Bảng quản lý lỗi 9 cột chuẩn ISTQB cho toàn bộ 16 defects thuộc 3 tính năng FR-05, FR-09, và FR-14.
+3. Đồng bộ hóa 100% liên kết và hình ảnh minh chứng thực tế (user-attachments) từ các GitHub Issues tương ứng cho từng lỗi.
+4. Bổ sung Mục 2 chi tiết các bước tái hiện, kết quả thực tế, kết quả mong đợi và nhúng trực tiếp ảnh minh chứng Markdown cho từng Defect phục vụ sao chép và quản lý trên GitHub Issues của repository QuangNg27/SoftwareTesting_HW04.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác và đầy đủ toàn bộ tài liệu `bug_report.md` theo chuẩn kỹ năng `bug-report`, bao quát đúng 16 lỗi của 3 tính năng được chọn (FR-05, FR-09, FR-14), cập nhật đúng môi trường kiểm thử tự động của bài HW04 và tích hợp đầy đủ các hình ảnh minh chứng từ GitHub Issues.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 46: Tự động Đẩy Toàn bộ 16 Issues lên GitHub Repository QuangNg27/SoftwareTesting_HW04
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `đẩy lên github issue luôn` | **Công cụ:** Gemini 3.7 Flash / `run_command`, `write_to_file` | **Timestamp:** `20-08-2026 21:31:23`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực thi tự động hóa tạo 16 issues trên GitHub repository QuangNg27/SoftwareTesting_HW04 thông qua GitHub REST API:
+1. Khởi tạo các Labels theo tính năng và mức độ nghiêm trọng: FR-05, FR-09, FR-14, Critical, High, Medium, Low, bug.
+2. Tự động tạo thành công toàn bộ 16 GitHub Issues từ Issue #2 đến Issue #17 với đầy đủ tiêu đề, nhãn, bảng mô tả chi tiết 9 tiêu chí, các bước tái hiện và ảnh minh chứng thực tế.
+3. Cập nhật các liên kết GitHub Issue trực tiếp vào bảng tệp bug_report.md.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã thực thi đẩy thành công 100% toàn bộ 16 issues lên kho lưu trữ GitHub `QuangNg27/SoftwareTesting_HW04` với đầy đủ nhãn phân loại, cấu trúc mô tả chuẩn mực và liên kết minh chứng rõ ràng, đồng thời đồng bộ hóa các URL Issue trực tiếp vào tài liệu `bug_report.md`.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 47: Cập nhật Date Reported trong bug_report.md theo Thời gian Thực thi HW04
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `chỉnh lại date reported trong @[bug_report.md]` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `20-08-2026 21:43:57`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Cập nhật trường Date Reported trong bảng quản lý lỗi 9 cột của tệp bug_report.md đồng bộ theo đúng các mốc thời gian thực thi kiểm thử tự động của bài tập HW04:
+- FR-05 (B001 - B009): 15-08-2026
+- FR-14 (B013 - B015): 16-08-2026
+- FR-09 (B010 - B012, B016): 18-08-2026
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã cập nhật chính xác các mốc thời gian báo cáo lỗi (`Date Reported`) trong `bug_report.md` tương ứng với chu kỳ thực thi kiểm thử tự động đa trình duyệt trong tháng 08/2026 của bài tập HW04.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 48: Chụp Ảnh Minh Chứng Playwright HTML Report và Cập nhật Đầy đủ lên 16 GitHub Issues & bug_report.md
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `chỉnh lại ngày theo automation test report có thể chụp thêm ảnh mình chứng trong playwright report lên issue page cho mỗi bug` | **Công cụ:** Gemini 3.7 Flash / `run_command`, `write_to_file` | **Timestamp:** `20-08-2026 21:47:38`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Thực hiện trọn vẹn quy trình trích xuất và cập nhật minh chứng Playwright HTML Report:
+1. Sử dụng Playwright headless truy cập trực tiếp vào các bản báo cáo html_report/FR05, html_report/FR09, html_report/FR14 để chụp 16 ảnh chi tiết từng ca kiểm thử phát hiện lỗi (kèm banner trực quan MSSV 23127462).
+2. Lưu trữ toàn bộ ảnh vào thư mục evidence/playwright_reports/ và commit/push lên GitHub repository.
+3. Cập nhật qua GitHub REST API toàn bộ 16 trang GitHub Issues (#2 đến #17) bổ sung trường Date Reported chuẩn xác và mục 3.2 Minh chứng Kiểm thử Tự động (Playwright Test Report).
+4. Cập nhật tệp bug_report.md tích hợp cả 2 nguồn minh chứng (UI Proof và Playwright Report Proof) cho từng lỗi.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã tự động hóa hoàn chỉnh việc trích xuất hình ảnh kiểm thử thực tế từ Playwright HTML Report, đẩy lên kho GitHub, cập nhật đồng bộ cả 16 trang GitHub Issues lẫn tài liệu báo cáo `bug_report.md` với đầy đủ minh chứng kép và ngày báo cáo chuẩn xác theo từng feature.
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 49: Cập nhật Đồng nhất Date Reported trong bug_report.md thành Ngày Hôm nay (20-08-2026)
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `chỉnh date reported trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\bug_report.md] thành hôm này hết` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content` | **Timestamp:** `20-08-2026 21:54:13`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Đã cập nhật toàn bộ cột Date Reported trong bảng quản lý lỗi 9 cột của tệp bug_report.md đồng nhất thành ngày hôm nay: 20-08-2026 cho tất cả 16 ca lỗi từ B001 đến B016.
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã thực hiện chính xác chỉ đạo của người dùng: cập nhật toàn bộ 16 giá trị trong cột `Date Reported` của bảng quản lý lỗi trong `bug_report.md` sang ngày hiện tại (`20-08-2026`).
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

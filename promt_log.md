@@ -351,3 +351,28 @@ chỉnh lại script của test case TC-FR09-008 là thấy alert yêu cầu đ�
 ```text
 chỉnh script của TC-FR09-013 cũng check alert đăng nhập
 ```
+
+### [20-08-2026 21:26:41] | Gemini
+```text
+cập nhật lại @[bug_report.md] theo môi trường của bài HW này, xem các issue của các feature FR05, FR09, FR14 trên D:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\html_report\FR14\index.html rồi copy lại vào issue của repo này đặc biệt là mấy cái minh chứng
+```
+
+### [20-08-2026 21:31:23] | Gemini
+```text
+đẩy lên github issue luôn
+```
+
+### [20-08-2026 21:43:57] | Gemini
+```text
+chỉnh lại date reported trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\bug_report.md]
+```
+
+### [20-08-2026 21:47:38] | Gemini
+```text
+chỉnh lại ngày theo automation test report có thể chụp thêm ảnh mình chứng trong playwright report lên issue page cho mỗi bug
+```
+
+### [20-08-2026 21:54:13] | Gemini
+```text
+chỉnh date reported trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\bug_report.md] thành hôm này hết
+```
