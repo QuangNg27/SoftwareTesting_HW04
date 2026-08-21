@@ -381,3 +381,31 @@ chỉnh date reported trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\bug_re
 ```text
 cập nhật gap analysis cho 2 script của fr09 và fr14 nếu có
 ```
+
+### [21-08-2026 20:49:54] | Gemini
+```text
+verify lại nội dung phần 4 và 5 trong @[d:\NAM_3\HK3\KTPM\HW04\SoftwareTesting_HW04\Report.md] đúng theo nội dung data và test script không
+```
+
+### [21-08-2026 20:56:59] | Gemini
+```text
+tạo file AI_Critique viết theo nội dung này Write a paragraph of 200^300 words critiquing the AI. Address the following
+questions: Where did the AI get something wrong, biased, or incomplete? Why did it fail to catch the issue? What principle have you learned about collaborating with AI during this assignment?
+```
+
+### [21-08-2026 20:58:02] | Gemini
+```text
+dịch ra tiếng việt
+```
+
+### [21-08-2026 21:05:47] | Gemini
+```text
+thêm README.md containing the self-assessment table (below) and a test summary report: number of features; number of test cases automated, executed, passed, and failed; number of browser runs; number of bugs; and the demo video link (outline).
+
+đọc section 15 trong @[2026.HW04.Automation Testing_En.pdf] để lấy assessment table template
+```
+
+### [21-08-2026 21:31:27] | Gemini
+```text
+check lại minh chứng playwright trên github issue page bị lỗi 404
+```
