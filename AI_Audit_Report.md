@@ -3,7 +3,7 @@
 **Bài tập:** HW04 – Automation Testing  
 **Họ và tên:** Nguyễn Minh Quang  
 **MSSV:** 23127462  
-**Thời gian cập nhật:** 20-08-2026 21:54:13  
+**Thời gian cập nhật:** 21-08-2026 20:38:35  
 
 ---
 
@@ -701,4 +701,20 @@ Thực hiện trọn vẹn quy trình trích xuất và cập nhật minh chứn
 ```
 - **3. Verdict (Đánh giá):** **VALID**
 - **4. Reasoning (Lý do đánh giá):** AI đã thực hiện chính xác chỉ đạo của người dùng: cập nhật toàn bộ 16 giá trị trong cột `Date Reported` của bảng quản lý lỗi trong `bug_report.md` sang ngày hiện tại (`20-08-2026`).
+- **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.
+
+---
+
+## Tác vụ 50: Bổ sung Phân tích Khoảng trống (AI Gap Analysis) cho Kịch bản FR-14 và FR-09 vào Report.md
+
+- **1. Prompt + tool (Câu lệnh + Công cụ):** `cập nhật gap analysis cho 2 script của fr09 và fr14 nếu có` | **Công cụ:** Gemini 3.7 Flash / `replace_file_content`, `write_to_file` | **Timestamp:** `21-08-2026 20:38:35`
+- **2. AI output (Kết quả đầu ra của AI):**
+```text
+Cập nhật toàn diện Mục 3: AI Gap Analysis trong tệp Report.md, mở rộng phân tích chuyên sâu cho cả 3 kịch bản:
+1. FR-05 (Mục 3.1): 7 điểm hiệu chỉnh (Async wait, RegExp locator, Negative assertions, Assertion vs Defect, Substring match false positive, WebKit race condition, WebKit synthetic tab limitations).
+2. FR-14 (Mục 3.2): 3 điểm hiệu chỉnh (Lỗi timeout 30.000ms & Dropped click / Hydration timing trên WebKit, Early assertion race condition trên BVA 256 ký tự, và Async table fetching auto-wait).
+3. FR-09 (Mục 3.3): 3 điểm hiệu chỉnh (Lỗi Strict mode violation khi định vị số tiền, Bỏ sót kiểm định JavaScript Dialog alert native khi chưa đăng nhập / đăng xuất, và Lệch đồng bộ state giỏ hàng SPA).
+```
+- **3. Verdict (Đánh giá):** **VALID**
+- **4. Reasoning (Lý do đánh giá):** AI đã tổng hợp và bổ sung xuất sắc toàn bộ các phân tích khoảng trống thực tế gặp phải trong quá trình tự động hóa kịch bản FR-14 và FR-09, nêu bật rõ ràng 3 yếu tố then chốt cho mỗi vấn đề: Vấn đề AI gặp phải, Hiệu chỉnh của sinh viên, và Nguyên nhân cốt lõi AI bỏ sót, đáp ứng trọn vẹn tiêu chuẩn Mục 6 (Task 1) của đề bài HW04.
 - **5. Student fix (Bản sửa đổi của sinh viên):** Không cần chỉnh sửa.

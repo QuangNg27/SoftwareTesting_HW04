@@ -82,42 +82,84 @@
 
 ## 3. AI Gap Analysis (Đánh giá & Hiệu chỉnh Kịch bản Tự động của Sinh viên)
 
-Trong quá trình sử dụng AI để tự động hóa kịch bản kiểm thử trên ứng dụng EShop (`fr_05.spec.js`), sinh viên đã критически (phản biện) rà soát mã nguồn do AI sinh ra và phát hiện 7 điểm hạn chế/bỏ sót nghiêm trọng. Dưới đây là phân tích khoảng trống (Gap Analysis) và các hiệu chỉnh đã thực hiện:
+Trong quá trình sử dụng AI để tự động hóa kịch bản kiểm thử trên ứng dụng EShop (`fr_05.spec.js`, `fr_14.spec.js`, `fr_09.spec.js`), sinh viên đã phản biện và rà soát nghiêm ngặt toàn bộ mã nguồn do AI sinh ra, phát hiện các điểm hạn chế/bỏ sót nghiêm trọng và thực hiện hiệu chỉnh để đảm bảo độ tin cậy, tính ổn định đa trình duyệt và khả năng phát hiện đúng lỗi (Defect) thực tế của SUT. Dưới đây là phân tích khoảng trống chi tiết theo từng tính năng:
 
-### 3.1. Thiếu cơ chế chờ bất đồng bộ trong ứng dụng React SPA (Flaky Async Wait)
+---
+
+### 3.1. Tính năng FR-05: Xem danh sách & Tìm kiếm Sản phẩm (`fr_05.spec.js`)
+
+#### 3.1.1. Thiếu cơ chế chờ bất đồng bộ trong ứng dụng React SPA (Flaky Async Wait)
 * **Vấn đề AI gặp phải:** Trong `TC-FR05-002`, AI gọi trực tiếp `const count = await images.count()` ngay sau lệnh `await page.goto()`. Vì EShop là ứng dụng Single Page Application (React) tải dữ liệu sản phẩm bất đồng bộ từ backend API, tại thời điểm vừa load trang DOM chưa kịp render các thẻ `<img>`, dẫn đến `images.count()` luôn bằng `0`.
 * **Hiệu chỉnh của sinh viên:** Bổ sung câu lệnh auto-wait bất đồng bộ `await expect(page.locator('img').first()).toBeVisible()` trước khi gọi đếm `count()`, đảm bảo React render xong toàn bộ danh sách sản phẩm và thẻ ảnh lên DOM.
 * **Nguyên nhân AI bỏ sót:** AI sinh mã theo luồng tuần tự tĩnh (static flow), không tự dự đoán được độ trễ mạng (network latency) và đặc tính render client-side của ứng dụng React.
 
-### 3.2. Sai cú pháp Locator Regex của Playwright (Fragile/Incorrect Selector Syntax)
+#### 3.1.2. Sai cú pháp Locator Regex của Playwright (Fragile/Incorrect Selector Syntax)
 * **Vấn đề AI gặp phải:** AI sử dụng cú pháp sai `page.locator('text=/\\d{1,3}(,\\d{3})* ₫/').first()` để cố gắng khớp biểu thức chính quy (Regex). Cú pháp này không hợp lệ trong Playwright API làm phát sinh lỗi `element(s) not found`.
 * **Hiệu chỉnh của sinh viên:** Thay thế bằng cú pháp Playwright API chính thức: `page.getByText(/30,000,000 ₫/)`, đồng thời nâng cấp các locator sang dạng ngữ nghĩa Accessibility như `getByRole`, `getByPlaceholder`.
 * **Nguyên nhân AI bỏ sót:** Mô hình AI thiếu khả năng cập nhật chính xác về cú pháp mảng locator chuỗi `text=` của Playwright v1.40+, nhầm lẫn giữa cú pháp string literal và RegExp object trong JavaScript/TypeScript.
 
-### 3.3. Bỏ sót các khẳng định phủ định (Missing Negative Assertions)
+#### 3.1.3. Bỏ sót các khẳng định phủ định (Missing Negative Assertions)
 * **Vấn đề AI gặp phải:** Ở `TC-FR05-003` và `TC-FR05-004` (tìm kiếm sản phẩm), AI ban đầu chỉ tạo assertion cho các sản phẩm xuất hiện (`toBeVisible()`), nhưng bỏ sót yêu cầu quan trọng trong ER: *"Các sản phẩm khác không khớp sẽ bị ẩn đi"*.
 * **Hiệu chỉnh của sinh viên:** Đối chiếu với bảng ER trong báo cáo HW02 và bổ sung thêm các khẳng định phủ định như `await expect(page.getByRole('heading', { name: 'MacBook Pro M3' })).not.toBeVisible()`.
 * **Nguyên nhân AI bỏ sót:** AI có xu hướng thiên vị kiểm thử tích cực (Happy Path Bias) nên chỉ tập trung vào phần tử hiển thị mà bỏ qua điều kiện ẩn các phần tử không liên quan.
 
-### 3.4. Phân định giữa lỗi Script và lỗi thực tế của SUT (Assertion vs Defect)
+#### 3.1.4. Phân định giữa lỗi Script và lỗi thực tế của SUT (Assertion vs Defect)
 * **Vấn đề AI gặp phải:** Khi kiểm thử `TC-FR05-001` (định dạng giá tiền `₫`) và `TC-FR05-002` (thuộc tính `alt` của ảnh), câu lệnh `expect` bị Fail trên ứng dụng SUT thực tế (do SUT đang hiển thị `"VND"` và `alt=""` rỗng). AI có xu hướng tự động hạ thấp tiêu chuẩn assertion để test script chạy Pass.
 * **Hiệu chỉnh của sinh viên:** Giữ nguyên các khẳng định nghiêm ngặt theo đúng Kết quả mong đợi (ER). Việc assertion bị Fail trên SUT là kết quả kiểm thử chính xác để phát hiện ra defect thực tế của hệ thống (khớp với Actual Result trong Báo cáo kiểm thử).
 * **Nguyên nhân AI bỏ sót:** AI thường có tâm lý cố gắng tạo ra script chạy Pass 100% (Pass Bias) thay vì giữ nguyên tiêu chuẩn kiểm thử để phát hiện lỗi của ứng dụng.
 
-### 3.5. Bắt nhầm chuỗi tiêu đề tìm kiếm gây lỗi False Positive trong TC-FR05-006 (Substring Match False Positive)
+#### 3.1.5. Bắt nhầm chuỗi tiêu đề tìm kiếm gây lỗi False Positive trong TC-FR05-006 (Substring Match False Positive)
 * **Vấn đề AI gặp phải:** Trong `TC-FR05-006` (tìm kiếm với khoảng trắng ở hai đầu `"   iPhone 15 Pro Max   "`), AI sử dụng locator chuỗi mơ hồ `page.locator('text=iPhone 15 Pro Max')`. Do giao diện luôn render dòng text `"Kết quả tìm kiếm cho:    iPhone 15 Pro Max   "`, Playwright đã bắt nhầm dòng chữ này và đánh giá `Pass` (False Positive) mặc dù trên thực tế ứng dụng SUT bị lỗi không trim khoảng trắng và không hề hiển thị bất kỳ thẻ sản phẩm nào.
 * **Hiệu chỉnh của sinh viên:** Thay đổi locator sang dạng chặt chẽ theo cấu trúc phần tử thẻ tiêu đề sản phẩm: `page.getByRole('heading', { name: 'iPhone 15 Pro Max', level: 2 })`. Khi đó, test script sẽ kiểm tra chính xác thẻ `<h2>` sản phẩm trên lưới và báo lỗi `Fail` đúng với lỗi thực tế của SUT.
 * **Nguyên nhân AI bỏ sót:** AI dùng selector quá lỏng lẻo (`text=...` tìm kiếm chuỗi con toàn trang), không neo chặt vào component/vai trò (role) cụ thể của thẻ sản phẩm trong DOM.
 
-### 3.6. Xung đột Race Condition giữa các trình duyệt (Multi-browser Timing & Stale State Assertion trên WebKit)
+#### 3.1.6. Xung đột Race Condition giữa các trình duyệt (Multi-browser Timing & Stale State Assertion trên WebKit)
 * **Vấn đề AI gặp phải:** Khi chạy `TC-FR05-006` trên WebKit (Safari Engine), do cơ chế lập lịch microtask và xử lý network I/O của WebKit khác Chromium, assertion `expect(heading 'iPhone 15 Pro Max').toBeVisible()` được đánh giá ngay lập tức khi API search chưa kịp trả về. Do ban đầu ở trang chủ sản phẩm `"iPhone 15 Pro Max"` đã có sẵn trên DOM, assertion này lập tức `Pass` dựa trên dữ liệu cũ (Stale State). Ngay sau đó, API trả về mảng rỗng làm các sản phẩm còn lại biến mất $\rightarrow$ Các assertion `not.toBeVisible()` tiếp theo cũng `Pass` $\rightarrow$ Toàn bộ test case bị Pass sai lệch (Flaky / False Positive).
-* **Hiệu chỉnh của sinh viên:** Sử dụng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` để đồng bộ hóa hoàn toàn luồng gửi nhận API mạng trước khi thực hiện bất kỳ câu lệnh `expect` nào trên giao diện.
+* **Hiệu chỉnh của sinh viên:** Sử dụng `Promise.all([page.waitForResponse(...), page.locator('button:has-text("Tìm")').click()])` kết hợp `await response.json()` để đồng bộ hóa hoàn toàn luồng gửi nhận API mạng trước khi thực hiện bất kỳ câu lệnh `expect` nào trên giao diện.
 * **Nguyên nhân AI bỏ sót:** AI không lường trước được sự khác biệt về chu kỳ render và độ trễ network giữa các engine trình duyệt khác nhau (Chromium vs Firefox vs WebKit) trong môi trường Multi-Browser Testing.
 
-### 3.7. Giới hạn Synthetic Tab Navigation của WebKit Engine (Headless WebKit Limitation & Skip Strategy)
+#### 3.1.7. Giới hạn Synthetic Tab Navigation của WebKit Engine (Headless WebKit Limitation & Skip Strategy)
 * **Vấn đề AI gặp phải:** Trong `TC-FR05-013` (kiểm tra thứ tự Tab), assertion `expect(input).toBeFocused()` hoặc `expect(link).toBeFocused()` bị lỗi timeout trên WebKit chạy môi trường không đầu (Headless trên Windows/Linux). Theo kiến trúc của WebKit Port trên Windows/Linux, engine WebKit không hỗ trợ mô phỏng luồng chuyển tiêu điểm bàn phím tự động (Synthetic Tab Key Progression) nếu không có cơ chế Full Keyboard Access của hệ điều hành macOS.
 * **Hiệu chỉnh của sinh viên:** Sử dụng `test.skip(browserName === 'webkit', ...)` theo đúng chuẩn khuyến nghị chính thức của Playwright Framework cho các kịch bản synthetic tab navigation trên WebKit, trong khi vẫn thực thi đầy đủ và kiểm định nghiêm ngặt 100% luồng Tab Order trên cả Chromium và Firefox.
 * **Nguyên nhân AI bỏ sót:** AI thiếu kiến thức sâu về giới hạn hỗ trợ synthetic keyboard events của nhân WebKit headless trên nền tảng Windows/Linux.
+
+---
+
+### 3.2. Tính năng FR-14: Quản lý Danh mục Admin (`fr_14.spec.js`)
+
+#### 3.2.1. Lỗi Treo Timeout 30.000ms & Hiện tượng Dropped Click / Hydration Timing trên WebKit
+* **Vấn đề AI gặp phải:** Trong hook `beforeEach` khi đăng nhập Admin, sau khi bấm nút "Login", React render Dashboard Admin nhưng chưa kịp gắn kết (hydrate/bind) sự kiện `onClick` vào phần tử `<li>Danh mục</li>`. Lệnh `click()` của Playwright diễn ra quá nhanh và bị rơi (dropped click / No-op), khiến trang không chuyển tab sang Quản lý Danh mục và câu lệnh `expect(heading 'Quản lý Danh mục')` bị timeout 30.000ms trên WebKit. Đồng thời, việc dùng `emailInput.isVisible({ timeout: 2000 })` không có auto-wait khiến WebKit bỏ qua khối đăng nhập khi form chưa kịp mount.
+* **Hiệu chỉnh của sinh viên:** Áp dụng cơ chế auto-retry chính thức `expect(async () => { await page.getByRole('listitem').filter({ hasText: 'Danh mục' }).click({ force: true }); await expect(page.getByRole('heading', { name: 'Quản lý Danh mục' })).toBeVisible({ timeout: 2000 }); }).toPass({ timeout: 10000 })` kết hợp xử lý điều kiện đăng nhập auto-wait đồng thời `Promise.race([expect(emailInput).toBeVisible(), expect(categoryMenu).toBeVisible()])`.
+* **Nguyên nhân AI bỏ sót:** AI không nhận thức được độ trễ Hydration Event giữa lúc render DOM và lúc React gắn xong listener xử lý sự kiện trong các trình duyệt khác ngoài Chromium.
+
+#### 3.2.2. Lỗi Khẳng định Sớm Gây False Positive trong TC-FR14-005 (Early Assertion Race Condition trên BVA 256 ký tự)
+* **Vấn đề AI gặp phải:** Trong `TC-FR14-005` (kiểm tra biên 256 ký tự), AI ban đầu viết `await expect(longCategoryRow).not.toBeVisible()`. Lệnh này được thực thi ngay tức thì (0ms) sau khi bấm "Thêm mới" khi backend chưa kịp phản hồi `POST /api/categories` và React chưa re-render bảng. Do dòng 256 ký tự chưa xuất hiện trên DOM tại mili-giây đó, assertion `not.toBeVisible()` lập tức đánh giá `Pass` sai lệch (False Positive), che giấu hoàn toàn lỗi thực tế của SUT (SUT thực tế cho phép lưu nguyên vẹn 256 ký tự).
+* **Hiệu chỉnh của sinh viên:** Loại bỏ assertion phủ định tức thời, chuyển sang cơ chế: Chờ backend phản hồi `POST /api/categories`, lấy ô text thực tế vừa tạo `td:nth-child(2)` và đo trực tiếp độ dài chuỗi lưu thực tế: `expect(savedText.length).toBeLessThanOrEqual(255)`. Khi SUT lưu đủ 256 ký tự, assertion này sẽ báo `Fail` chính xác 100% để phát hiện lỗi Defect.
+* **Nguyên nhân AI bỏ sót:** AI lạm dụng assertion phủ định `not.toBeVisible()` ngay sau hành động submit mà không đồng bộ hóa với vòng đời hoàn tất của request backend API.
+
+#### 3.2.3. Bỏ sót Auto-waiting khi Tải Bảng Dữ liệu Bất đồng bộ trong TC-FR14-008 (Async Table Fetching)
+* **Vấn đề AI gặp phải:** Trong `TC-FR14-008` (xem danh mục), AI gọi `await page.locator('tbody tr').count()` đồng bộ ngay khi vừa chuyển tab Danh mục mà không chờ React fetch xong API `GET /api/categories`, dẫn tới `count()` trả về `0` trên WebKit và báo lỗi sai.
+* **Hiệu chỉnh của sinh viên:** Bổ sung bước auto-waiting `await expect(page.locator('tbody tr').first()).toBeVisible({ timeout: 5000 })` trước khi đếm rowCount, đồng thời kiểm tra đầy đủ các thành phần tiêu đề cột `ID`, `Tên Danh Mục`, `Hành động` và các nút `Xóa` tương ứng theo đúng Kết quả mong đợi (ER).
+* **Nguyên nhân AI bỏ sót:** AI không đồng bộ hóa giữa hành động điều hướng trang và trạng thái hoàn tất tải dữ liệu bất đồng bộ của component bảng dữ liệu.
+
+---
+
+### 3.3. Tính năng FR-09: Mã Giảm Giá Coupon (`fr_09.spec.js`)
+
+#### 3.3.1. Lỗi Xung đột Nhiều Phần tử (Strict Mode Violation) khi Định vị Số tiền Giảm giá & Tổng thanh toán
+* **Vấn đề AI gặp phải:** Khi kiểm tra số tiền giảm giá và tổng tiền trong `TC-FR09-001`, `TC-FR09-002`, `TC-FR09-011`, AI sử dụng selector chuỗi đơn giản như `page.getByText('50,000 ₫')` hoặc `page.locator('text=...')`. Do trên trang Checkout giá tiền xuất hiện ở nhiều vị trí (giá sản phẩm, tiền giảm giá, tổng tiền, bảng tóm tắt đơn hàng), Playwright ném lỗi `strict mode violation: locator resolved to 2 elements`.
+* **Hiệu chỉnh của sinh viên:** Neo chặt selector vào vùng chứa ngữ nghĩa cụ thể: `page.locator('p').filter({ hasText: 'Tiết kiệm:' }).locator('strong')` để kiểm tra đúng số tiền giảm giá, và `page.locator('p').filter({ hasText: 'Tổng thanh toán:' }).locator('strong')` để kiểm tra tổng tiền thanh toán cuối cùng.
+* **Nguyên nhân AI bỏ sót:** AI không phân tích toàn diện cây DOM của trang Checkout nơi cùng một giá trị số tiền định dạng có thể xuất hiện lặp lại ở nhiều thành phần giao diện khác nhau.
+
+#### 3.3.2. Bỏ sót Kiểm định Hộp thoại Alert Native Yêu cầu Đăng nhập trong TC-FR09-008 & TC-FR09-013
+* **Vấn đề AI gặp phải:** Trong `TC-FR09-008` (khách vãng lai checkout) và `TC-FR09-013` (người dùng nhấn Đăng xuất tại trang checkout), AI ban đầu chỉ kiểm tra chuyển hướng URL `page.waitForURL('/login')` mà hoàn toàn bỏ qua việc kiểm tra sự xuất hiện của hộp thoại `window.alert` native yêu cầu đăng nhập theo đúng Kết quả mong đợi (ER).
+* **Hiệu chỉnh của sinh viên:** Tích hợp bộ lắng nghe sự kiện `page.once('dialog', async dialog => { expect(dialog.message()).toContain('Bạn cần đăng nhập để thanh toán!'); await dialog.accept(); })` trước khi bấm "Tiến hành thanh toán" hoặc "Áp dụng mã". Kỹ thuật này giúp kiểm định đầy đủ cả 2 tiêu chí: nội dung thông báo alert native và hành vi điều hướng trang sau khi người dùng bấm OK.
+* **Nguyên nhân AI bỏ sót:** AI thường bỏ qua kiểm tra JavaScript Dialogs native vì dialog có tính chất blocking và dễ gây treo kịch bản nếu không được gắn event listener trước khi sự kiện kích hoạt.
+
+#### 3.3.3. Lệch đồng bộ Trạng thái Giỏ hàng & Phiên Đăng nhập (Cart State Synchronization & Session Control)
+* **Vấn đề AI gặp phải:** Khi chuyển từ trang chủ sang giỏ hàng và thanh toán, AI không chờ React đồng bộ state giỏ hàng từ `localStorage`/API trước khi bấm "Tiến hành thanh toán", khiến trang Checkout đôi khi nhận giỏ hàng rỗng (`0 ₫`) hoặc tự động redirect về trang chủ làm kịch bản bị flaky.
+* **Hiệu chỉnh của sinh viên:** Thêm các bước kiểm tra tiền điều kiện rõ ràng: chờ sản phẩm xuất hiện trong giỏ hàng `await expect(page.locator('text=Tổng tiền:')).toBeVisible()`, sau đó mới chuyển sang `page.waitForURL('**/checkout')`. Trong `TC-FR09-013`, thực hiện đăng xuất rõ ràng qua nút "Thoát" và kiểm tra việc hủy phiên người dùng trước khi áp dụng mã giảm giá.
+* **Nguyên nhân AI bỏ sót:** AI giả định rằng dữ liệu giỏ hàng và trạng thái xác thực phiên làm việc (Session Authentication State) luôn được cập nhật tức thời và đồng bộ xuyên suốt các component React.
 
 ---
 
