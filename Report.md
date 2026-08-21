@@ -1,4 +1,4 @@
-# Báo cáo Kiểm thử HW04 – Automation Testing on EShop
+# Báo cáo HW04 – Automation Testing on EShop
 
 **Thông tin chung:**
 - **Môn học:** Kiểm thử Phần mềm (Software Testing)
@@ -80,7 +80,7 @@
 
 ---
 
-## 3. AI Gap Analysis (Đánh giá & Hiệu chỉnh Kịch bản Tự động của Sinh viên)
+## 3. AI Gap Analysis
 
 Trong quá trình sử dụng AI để tự động hóa kịch bản kiểm thử trên ứng dụng EShop (`fr_05.spec.js`, `fr_14.spec.js`, `fr_09.spec.js`), sinh viên đã phản biện và rà soát nghiêm ngặt toàn bộ mã nguồn do AI sinh ra, phát hiện các điểm hạn chế/bỏ sót nghiêm trọng và thực hiện hiệu chỉnh để đảm bảo độ tin cậy, tính ổn định đa trình duyệt và khả năng phát hiện đúng lỗi (Defect) thực tế của SUT. Dưới đây là phân tích khoảng trống chi tiết theo từng tính năng:
 
